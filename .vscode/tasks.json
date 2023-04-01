@@ -10,7 +10,7 @@
             },
             "type": "shell",
             "dependsOn": "Clean",
-            "command": "npm install && npm audit --production",
+            "command": "npm install",
             "presentation": {
                 "panel": "dedicated",
                 "reveal": "always",
@@ -44,7 +44,7 @@
                 "color": "terminal.ansiGreen"
             },
             "type": "shell",
-            "command": "npm publish",
+            "command": "npm run deploy",
             "presentation": {
                 "panel": "dedicated",
                 "reveal": "always",

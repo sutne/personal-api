@@ -3,10 +3,10 @@ import * as spotify from '../src/spotify';
 
 
 export default async function (req: VercelRequest, res: VercelResponse) {
-  const nowPlaying = await spotify.getNowPlaying();
-  const recentlyPlayed = await spotify.getRecentlyPlayed();
-  const topSongs = await spotify.getTopSongs();
-  const topArtists = await spotify.getTopArtists();
+  const nowPlaying = await spotify.getNowPlaying().catch(() => { });
+  const recentlyPlayed = await spotify.getRecentlyPlayed().catch(() => { });
+  const topSongs = await spotify.getTopSongs().catch(() => { });
+  const topArtists = await spotify.getTopArtists().catch(() => { });
   res.send({
     nowPlaying: nowPlaying,
     recentlyPlayed: recentlyPlayed,

@@ -25,7 +25,7 @@ async function _getToken(): Promise<string> {
         `refresh_token=${REFRESH_TOKEN}`
       ].join("&"),
     },
-  ).then(res => res.json());
+  ).then(res => res.json()).catch(err => console.log(err));
   return response.access_token;
 }
 
@@ -36,7 +36,7 @@ export async function getNowPlaying(): Promise<JSON> {
       method: "GET",
       headers: { "Authorization": `Bearer ${await _getToken()}` },
     },
-  ).then(res => res.json());
+  ).then(res => res.json()).catch(err => console.log(err));
   return response;
 }
 
@@ -46,7 +46,7 @@ export async function getRecentlyPlayed(): Promise<JSON> {
       method: "GET",
       headers: { "Authorization": `Bearer ${await _getToken()}` },
     },
-  ).then(res => res.json());
+  ).then(res => res.json()).catch(err => console.log(err));
   return response;
 }
 
@@ -56,7 +56,7 @@ export async function getTopSongs(): Promise<JSON> {
       method: "GET",
       headers: { "Authorization": `Bearer ${await _getToken()}` },
     },
-  ).then(res => res.json());
+  ).then(res => res.json()).catch(err => console.log(err));
   return response;
 }
 
@@ -66,6 +66,6 @@ export async function getTopArtists(): Promise<JSON> {
       method: "GET",
       headers: { "Authorization": `Bearer ${await _getToken()}` },
     },
-  ).then(res => res.json());
+  ).then(res => res.json()).catch(err => console.log(err));
   return response;
 }

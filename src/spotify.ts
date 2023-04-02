@@ -7,7 +7,7 @@ const SPOTIFY_API = {
   REFRESH_TOKEN: "https://accounts.spotify.com/api/token",
   NOW_PLAYING: "https://api.spotify.com/v1/me/player/currently-playing",
   RECENTLY_PLAYED: "https://api.spotify.com/v1/me/player/recently-played?limit=3",
-  // TOP_SONGS: "https://api.spotify.com/v1/me/top/tracks?limit=5&time_range=short_term",
+  TOP_SONGS: "https://api.spotify.com/v1/me/top/tracks?limit=5&time_range=short_term",
   TOP_ARTISTS: "https://api.spotify.com/v1/me/top/artists?limit=5&time_range=short_term",
 }
 
@@ -61,21 +61,23 @@ export async function getTopArtists(): Promise<JSON> {
   return artists;
 }
 
-// export async function getTopAlbums(): Promise<JSON> {
-//   const response = await fetch(SPOTIFY_API.TOP_SONGS,
-//     {
-//       method: "GET",
-//       headers: { "Authorization": `Bearer ${await _getToken()}` },
-//     },
-//   ).then(res => res.json()).catch(err => console.log(err));
-//   const songs = response.items.map((album: any) => _filterTopAlbums(album));
-//   return songs;
-// }
+export async function getTopSongs(): Promise<JSON> {
+  const response = await fetch(SPOTIFY_API.TOP_SONGS,
+    {
+      method: "GET",
+      headers: { "Authorization": `Bearer ${await _getToken()}` },
+    },
+  ).then(res => res.json()).catch(err => console.log(err));
+  const songs = response.items.map((album: any) => _filterTopSong(album));
+  return songs;
+}
 
 
 
 function _filterNowPlaying(song: any): any {
+  if (song.is_playing === false) return { is_playing: false }
   return {
+    is_playing: true,
     title: song.item.name,
     artists: song.item.artists.map((artist: any) => artist.name),
     art: song.item.album.images[0].url,
@@ -108,5 +110,17 @@ function _filterTopArtist(artist: any): any {
     genres: artist.genres,
     image: artist.images[0].url,
     href: artist.external_urls.spotify,
+  };
+}
+
+function _filterTopSong(song: any): any {
+  return {
+    name: song.name,
+    artists: song.artists.map((artist: any) => artist.name),
+    art: song.album.images[0].url,
+    explicit: song.explicit,
+    is_local: song.is_local,
+    sample: song.preview_url,
+    href: song.external_urls.spotify,
   };
 }

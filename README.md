@@ -8,5 +8,5 @@ Some basic endpoints hosted at [vercel](https://vercel.com/) that I use for my p
 
 Gets the song i am currently listening to and a list of my:
 - 5 most recently played songs
-- 5 top songs (short_term)
-- 5 top artists (short_term)
+<!-- - 5 top albums (short_term ≈ last 4 weeks) -->
+- 5 top artists (short_term ≈ last 4 weeks)

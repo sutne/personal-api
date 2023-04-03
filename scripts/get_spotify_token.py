@@ -7,23 +7,23 @@ from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
 SPOTIFY_CLIENT_ID = os.environ.get("SPOTIFY_CLIENT_ID")
 SPOTIFY_CLIENT_SECRET = os.environ.get("SPOTIFY_CLIENT_SECRET")
-SPOTIFY_REDIRECT_URI = os.environ.get("SPOTIFY_REDIRECT_URI")
+REDIRECT_URI = "http://localhost/callback/"
 
-if not all([SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT_URI]):
+if not all([SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, REDIRECT_URI]):
     print("An environment variable was not set")
     exit(0)
 
 # needs privilege to read the following
 permissions = [
+    "user-top-read",
     "user-read-currently-playing",
     "user-read-recently-played",
-    "user-top-read",
 ]
-SCOPE = ",".join(permissions)
+SCOPES = ",".join(permissions)
 
 # Step 2: create code
 print("Go to the following link:")
-code_redirect_url = f"https://accounts.spotify.com/authorize?client_id={SPOTIFY_CLIENT_ID}&response_type=code&scope={SCOPE}&redirect_uri={SPOTIFY_REDIRECT_URI}"
+code_redirect_url = f"https://accounts.spotify.com/authorize?client_id={SPOTIFY_CLIENT_ID}&response_type=code&scope={SCOPES}&redirect_uri={REDIRECT_URI}"
 print(f"\n{code_redirect_url}\n")
 url_with_code = input("Paste the URL you are redirected to here: ")
 CODE = url_with_code.split("?code=")[1]

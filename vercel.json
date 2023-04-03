@@ -13,7 +13,7 @@
                 },
                 {
                     "key": "Access-Control-Allow-Methods",
-                    "value": "GET"
+                    "value": "GET,POST,PUT,OPTIONS"
                 },
                 {
                     "key": "Access-Control-Allow-Headers",

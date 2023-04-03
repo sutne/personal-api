@@ -1,19 +1,26 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import * as spotify from '../src/spotify';
+import * as spotify from '../src/spotify/middleware';
+import { SpotifyResponse } from '../src/spotify/types';
 
 
 export default async function (req: VercelRequest, res: VercelResponse) {
   const [nowPlaying, recentlyPlayed, topArtists, topSongs] = await Promise.all([
-    spotify.getNowPlaying().catch((err) => { console.log(err) }),
-    spotify.getRecentlyPlayed().catch((err) => { console.log(err) }),
-    spotify.getTopArtists().catch((err) => { console.log(err) }),
-    spotify.getTopSongs().catch((err) => { console.log(err) }),
+    spotify.getNowPlaying(),
+    spotify.getRecentlyPlayed(),
+    spotify.getTopArtists(),
+    spotify.getTopSongs(),
   ]);
-  res.send({
-    nowPlaying: nowPlaying,
-    recentlyPlayed: recentlyPlayed,
-    topArtists: topArtists,
-    topSongs: topSongs,
-  });
+  const response: SpotifyResponse = {
+    status: {
+      error: false,
+      errorMessage: '',
+    },
+    data: {
+      nowPlaying: nowPlaying,
+      recentlyPlayed: recentlyPlayed,
+      topArtists: topArtists,
+      topSongs: topSongs,
+    }
+  }
+  res.send(response);
 }
-

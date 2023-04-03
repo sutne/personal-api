@@ -12,7 +12,11 @@
     text-align: center;
     font-size: 1.5em;
     margin: 0 auto;
-    width: min(100%, 400px);
+    width: min(100%, 600px);
+  }
+
+  .content {
+    text-align: left;
   }
 
   h1 {
@@ -32,18 +36,25 @@
   p {
     padding: 0;
     margin: 0;
-    text-align: left;
+  }
+
+  ul {
+    padding: 0;
+    margin: 0;
   }
 </style>
 
 <body>
   <h1>Endpoints</h1>
-  <p>
-    <span>Spotify: </span><a href="/api/spotify">/api/spotify</a>
-  </p>
-  <p>
-    <span>Logs: </span><a href="/_logs">/_logs</a>
-  </p>
+  <div class="content">
+    <h4>Spotify</h4>
+    <p>Now Paying: <a href="/api/spotify/now-playing">/api/spotify/now-playing</a></p>
+    <p>Recently Played: <a href="/api/spotify/recently-played">/api/spotify/recently-played</a></p>
+    <p>Top Tracks: <a href="/api/spotify/top-tracks">/api/spotify/top-tracks</a></p>
+    <p>Top Artists: <a href="/api/spotify/top-artists">/api/spotify/top-artists</a></p>
+    <h4>Logs</h4>
+    <p><a href="/_logs">/_logs</a></p>
+  </div>
 </body>
 
 </html>

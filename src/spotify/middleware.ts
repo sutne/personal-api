@@ -49,10 +49,7 @@ async function fetchFromApi(url: string): Promise<any> {
         "Authorization": `Bearer ${await getToken()}`
       },
     }).then(res => {
-      if (!res.ok) {
-        console.log({ res });
-        throw new Error(res.statusText);
-      }
+      if (!res.ok) console.error({ url, res });
       return res.json();
     }).catch(error => { console.error(error) });
   return response;
@@ -74,11 +71,16 @@ async function getToken(): Promise<string> {
       ].join("&"),
     },
   ).then(res => {
-    if (!res.ok) {
-      console.log({ res });
-      throw new Error(res.statusText);
-    }
+    if (!res.ok) console.error({ res });
     return res.json();
   }).catch(error => { console.error(error) });
   return response.access_token;
 }
+
+// const token = await getToken({
+//   req,
+//   secret: process.env.JWT_SECRET,
+//   secureCookie:
+//     process.env.NEXTAUTH_URL?.startsWith("https://") ??
+//     !!process.env.VERCEL_URL,
+// });

@@ -19,7 +19,7 @@ function filterTopArtist(artist: any): Artist | undefined {
     const filtered: Artist = {
       name: artist.name,
       genres: artist.genres,
-      image: artist.images[2].url,
+      image: artist.images[0].url,
       href: artist.external_urls.spotify,
     };
     // console.log({ artist, filtered })

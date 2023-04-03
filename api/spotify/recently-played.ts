@@ -19,7 +19,7 @@ function filterRecentSong(recent_song: any): Track | undefined {
     const filtered: Track = {
       title: recent_song.name,
       artists: recent_song.artists.map((artist: any) => artist.name),
-      art: recent_song.album.images[2].url,
+      art: recent_song.album.images[0].url,
       isExplicit: recent_song.explicit,
       isLocal: recent_song.is_local,
       href: recent_song.external_urls.spotify,

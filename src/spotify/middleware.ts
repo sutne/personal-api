@@ -6,7 +6,7 @@ const REFRESH_TOKEN_URL = "https://accounts.spotify.com/api/token";
 
 
 export const CONFIG = {
-  LIMIT: 5, // max number of elements to get for each query
+  LIMIT: 15, // max number of elements to get for each query
   TIME_RANGE: "short_term", // ≈ last 4 weeks
 }
 

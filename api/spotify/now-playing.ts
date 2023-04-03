@@ -20,7 +20,7 @@ function filterNowPlaying(now_playing: any): NowPlaying | undefined {
     const filtered: NowPlaying = {
       title: now_playing.item.name,
       artists: now_playing.item.artists.map((artist: any) => artist.name),
-      art: now_playing.item.album.images[1].url,
+      art: now_playing.item.album.images[0].url,
       length: now_playing.item.duration_ms,
       progress: now_playing.progress_ms,
       isExplicit: now_playing.item.explicit,

@@ -19,7 +19,7 @@ function filterTopSong(top_song: any): Track | undefined {
     const filtered: Track = {
       title: top_song.name,
       artists: top_song.artists.map((artist: any) => artist.name),
-      art: top_song.album.images[2].url,
+      art: top_song.album.images[0].url,
       isExplicit: top_song.explicit,
       isLocal: top_song.is_local,
       href: top_song.external_urls.spotify,

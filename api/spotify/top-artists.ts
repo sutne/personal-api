@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import * as spotify from '../../src/spotify/middleware';
-import { Artist } from '../../src/spotify/types';
+import { ArtistType } from '../../src/spotify/types';
 import { formatRequest } from '../../src/util';
 
 const REQUEST_URL = formatRequest("https://api.spotify.com/v1/me/top/artists", {
@@ -14,9 +14,9 @@ export default async function (req: VercelRequest, res: VercelResponse) {
   res.send(artists ?? []);
 }
 
-function filterTopArtist(artist: any): Artist | undefined {
+function filterTopArtist(artist: any): ArtistType | undefined {
   try {
-    const filtered: Artist = {
+    const filtered: ArtistType = {
       name: artist.name,
       genres: artist.genres,
       image: artist.images[0].url,

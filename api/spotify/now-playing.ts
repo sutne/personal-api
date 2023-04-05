@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import * as spotify from '../../src/spotify/middleware';
-import { NowPlaying } from '../../src/spotify/types';
+import { NowPlayingType } from '../../src/spotify/types';
 import { formatRequest } from '../../src/util';
 
 const REQUEST_URL = formatRequest("https://api.spotify.com/v1/me/player/currently-playing");
@@ -14,15 +14,15 @@ export default async function (req: VercelRequest, res: VercelResponse) {
   res.send(nowPlaying);
 }
 
-function filterNowPlaying(now_playing: any): NowPlaying | undefined {
+function filterNowPlaying(now_playing: any): NowPlayingType | undefined {
   if (!now_playing?.is_playing) return;
   try {
-    const filtered: NowPlaying = {
+    const filtered: NowPlayingType = {
       title: now_playing.item.name,
       artists: now_playing.item.artists.map((artist: any) => artist.name),
-      art: now_playing.item.album.images[0].url,
+      image: now_playing.item.album.images[0].url,
       length: now_playing.item.duration_ms,
-      progress: now_playing.progress_ms,
+      startedAt: now_playing.timestamp - now_playing.progress_ms,
       isExplicit: now_playing.item.explicit,
       isLocal: now_playing.item.is_local,
       href: now_playing.item.external_urls.spotify,

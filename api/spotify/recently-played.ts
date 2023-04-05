@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import * as spotify from '../../src/spotify/middleware';
-import { Track } from '../../src/spotify/types';
+import { TrackType } from '../../src/spotify/types';
 import { formatRequest } from '../../src/util';
 
 const REQUEST_URL = formatRequest("https://api.spotify.com/v1/me/player/recently-played", {
@@ -14,12 +14,12 @@ export default async function (req: VercelRequest, res: VercelResponse) {
   res.send(songs ?? []);
 }
 
-function filterRecentSong(recent_song: any): Track | undefined {
+function filterRecentSong(recent_song: any): TrackType | undefined {
   try {
-    const filtered: Track = {
+    const filtered: TrackType = {
       title: recent_song.name,
       artists: recent_song.artists.map((artist: any) => artist.name),
-      art: recent_song.album.images[0].url,
+      image: recent_song.album.images[0].url,
       isExplicit: recent_song.explicit,
       isLocal: recent_song.is_local,
       href: recent_song.external_urls.spotify,

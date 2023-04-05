@@ -1,26 +1,21 @@
-export type Track = {
+export type TrackType = {
   title: string,
   artists: string[],
-  art: string,
+  image: string,
+  sample: string,
+  href: string,
   isExplicit: boolean,
   isLocal: boolean,
-  href: string,
-  sample: string,
 }
 
-export type NowPlaying = Track & {
+export type NowPlayingType = TrackType & {
   length: number,
-  progress: number,
+  startedAt: number,
 }
 
-export type Artist = {
+export type ArtistType = {
   name: string,
   genres: string[],
   image: string,
   href: string,
-}
-
-export type ApiStatus = {
-  error: boolean,
-  errorMessage: string,
 }

@@ -5,12 +5,12 @@ export type TrackType = {
   sample: string,
   href: string,
   isExplicit: boolean,
-  isLocal: boolean,
 }
 
 export type NowPlayingType = TrackType & {
   length: number,
-  startedAt: number,
+  elapsed: number,
+  timestamp: number,
 }
 
 export type ArtistType = {

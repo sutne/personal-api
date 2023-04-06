@@ -1,7 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import * as spotify from '../../src/spotify/middleware';
-import { NowPlayingType } from '../../src/spotify/types';
+import { NowPlayingType, TrackType } from '../../src/spotify/types';
 import { formatRequest } from '../../src/util';
+
 
 const REQUEST_URL = formatRequest("https://api.spotify.com/v1/me/player/currently-playing");
 
@@ -14,20 +15,36 @@ export default async function (req: VercelRequest, res: VercelResponse) {
   res.send(nowPlaying);
 }
 
+
+
 function filterNowPlaying(now_playing: any): NowPlayingType | undefined {
   if (!now_playing?.is_playing) return;
+  const track = filterTrack(now_playing.item);
+  if (!track) return;
   try {
-    const filtered: NowPlayingType = {
-      title: now_playing.item.name,
-      artists: now_playing.item.artists.map((artist: any) => artist.name),
-      image: now_playing.item.album.images[0].url,
+    const progress = {
       length: now_playing.item.duration_ms,
-      startedAt: now_playing.timestamp - now_playing.progress_ms,
-      isExplicit: now_playing.item.explicit,
-      isLocal: now_playing.item.is_local,
-      href: now_playing.item.external_urls.spotify,
-      sample: now_playing.item.preview_url,
+      elapsed: now_playing.progress_ms,
+      timestamp: now_playing.timestamp,
     }
+    return { ...track, ...progress };
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function filterTrack(track: any): TrackType | undefined {
+  try {
+    if (track.is_local) return;
+    const filtered: TrackType = {
+      title: track.name,
+      artists: track.artists.map((artist: any) => artist.name),
+      image: track.album.images[0].url,
+      isExplicit: track.explicit,
+
+      href: track.external_urls.spotify,
+      sample: track.preview_url,
+    };
     return filtered;
   } catch (error) {
     console.log(error);

@@ -5,5 +5,4 @@ scripts
 package-lock.json
 package.json
 *.md
-.env
-.pretterrc
+.prettierrc

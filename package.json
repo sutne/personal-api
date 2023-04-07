@@ -2,7 +2,6 @@
     "name": "personal-api",
     "version": "1.0.0",
     "description": "basic api for personal projects",
-    "main": "index.js",
     "scripts": {
         "start": "vercel dev",
         "deploy": "vercel deploy --prod"

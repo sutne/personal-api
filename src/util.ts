@@ -6,9 +6,7 @@ export function formatRequest(root: string, args?: Object) {
       const value = args[key];
       formattedArgs.push(`${key}=${value}`);
     }
-    url = `${url}?${formattedArgs.join("&")}`;
+    url = `${url}?${formattedArgs.join('&')}`;
   }
   return url;
 }
-
-

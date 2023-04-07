@@ -3,19 +3,15 @@ import * as spotify from '../../src/spotify/middleware';
 import { NowPlayingType, TrackType } from '../../src/spotify/types';
 import { formatRequest } from '../../src/util';
 
-
-const REQUEST_URL = formatRequest("https://api.spotify.com/v1/me/player/currently-playing");
-
-
-
+const REQUEST_URL = formatRequest(
+  'https://api.spotify.com/v1/me/player/currently-playing',
+);
 
 export default async function (req: VercelRequest, res: VercelResponse) {
   const response = await spotify.fetchFromApi(REQUEST_URL);
   const nowPlaying = filterNowPlaying(response);
   res.send(nowPlaying);
 }
-
-
 
 function filterNowPlaying(now_playing: any): NowPlayingType | undefined {
   if (!now_playing?.is_playing) return;
@@ -26,7 +22,7 @@ function filterNowPlaying(now_playing: any): NowPlayingType | undefined {
       length: now_playing.item.duration_ms,
       elapsed: now_playing.progress_ms,
       timestamp: now_playing.timestamp,
-    }
+    };
     return { ...track, ...progress };
   } catch (error) {
     console.log(error);

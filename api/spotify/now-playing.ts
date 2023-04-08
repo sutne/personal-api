@@ -1,16 +1,16 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import * as spotify from '../../src/spotify/middleware';
 import { NowPlayingType, TrackType } from '../../src/spotify/types';
-import { formatRequest } from '../../src/util';
+import { formatURL } from '../../src/util';
 
-const REQUEST_URL = formatRequest(
+const REQUEST_URL = formatURL(
   'https://api.spotify.com/v1/me/player/currently-playing',
 );
 
 export default async function (req: VercelRequest, res: VercelResponse) {
   const response = await spotify.fetchFromApi(REQUEST_URL);
   const nowPlaying = filterNowPlaying(response);
-  res.send(nowPlaying);
+  res.send(nowPlaying ?? {});
 }
 
 function filterNowPlaying(now_playing: any): NowPlayingType | undefined {

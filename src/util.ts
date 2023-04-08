@@ -1,12 +1,18 @@
-export function formatRequest(root: string, args?: Object) {
-  let url = root;
-  if (args) {
-    const formattedArgs: String[] = [];
-    for (const key in args) {
-      const value = args[key];
-      formattedArgs.push(`${key}=${value}`);
-    }
-    url = `${url}?${formattedArgs.join('&')}`;
-  }
-  return url;
+export function formatURL(root: string, args?: Object) {
+  console.log({ root });
+  if (!args) return root;
+
+  const query = Object.entries(args)
+    .map(([key, value]) => {
+      if (typeof value === 'object') {
+        value = encodeURIComponent(JSON.stringify(value));
+      }
+      return `${key}=${value}`;
+    })
+    .join('&');
+  return `${root}?${query}`;
+}
+
+export function B64String(str: string) {
+  return Buffer.from(str).toString('base64');
 }

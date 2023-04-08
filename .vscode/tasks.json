@@ -71,5 +71,22 @@
                 "echo": true,
             },
         },
+        {
+            "label": "Sync '.env'",
+            "icon": {
+                "id": "sync",
+                "color": "terminal.ansiYellow"
+            },
+            "type": "shell",
+            "command": "python3 scripts/sync-env.py",
+            "presentation": {
+                "panel": "dedicated",
+                "reveal": "always",
+                "showReuseMessage": false,
+                "focus": false,
+                "clear": true,
+                "echo": true,
+            },
+        },
     ]
 }

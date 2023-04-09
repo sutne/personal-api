@@ -1,15 +1,16 @@
-import type { VercelRequest, VercelResponse } from "@vercel/node";
-import * as spotify from "../../src/spotify/middleware";
-import { ArtistType } from "../../src/spotify/my-types";
-import { formatURL } from "../../src/util";
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-const REQUEST_URL = formatURL("https://api.spotify.com/v1/me/top/artists", {
+import * as spotify from '../../src/spotify/middleware';
+import { ArtistType } from '../../src/spotify/types';
+import { formatURL } from '../../src/util';
+
+const REQUEST_URL = formatURL('https://api.spotify.com/v1/me/top/artists', {
   limit: spotify.CONFIG.LIMIT,
   time_range: spotify.CONFIG.TIME_RANGE,
 });
 
 export default async function (req: VercelRequest, res: VercelResponse) {
-  const response = await spotify.fetchFromApi(REQUEST_URL);
+  const response = await spotify.fetch(REQUEST_URL);
   const items = response?.items;
   if (!items) {
     console.error({ response });
@@ -21,7 +22,7 @@ export default async function (req: VercelRequest, res: VercelResponse) {
   artists = artists.filter((artist) => artist !== undefined);
   return res
     .status(200)
-    .setHeader("Cache-Control", "max-age=0, public, s-maxage=86400")
+    .setHeader('Cache-Control', `max-age=0, public, s-maxage=${24 * 60 * 60}`)
     .send(artists);
 }
 

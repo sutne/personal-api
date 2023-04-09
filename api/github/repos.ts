@@ -1,66 +1,52 @@
-import { VercelRequest, VercelResponse } from "@vercel/node";
-import * as github from "../../src/github/middleware";
-import { RepoType } from "../../src/github/types";
+import { VercelRequest, VercelResponse } from '@vercel/node';
+
+import * as github from '../../src/github/middleware';
+import { RepoType } from '../../src/github/types';
 
 const USERNAME = process.env.GITHUB_USERNAME;
 
 export default async function (req: VercelRequest, res: VercelResponse) {
-  const personalRepos = await getPersonalRepos();
-  if (!personalRepos) return res.status(500).send("Failed to load GitHub data");
+  let repos = await github.fetch(`/users/${USERNAME}/repos`);
+  if (!repos) return res.status(500).send('Failed to load GitHub data');
+  repos = await filterRepos(repos);
 
   const organizations = await getOrganizations();
-  if (!organizations) return res.status(500).send("Failed to load GitHub data");
+  if (!organizations) return res.status(500).send('Failed to load GitHub data');
 
-  const orgRepos: RepoType[] = [];
   for (const org of organizations) {
-    const repos = await getOrganizationRepos(org);
-    if (!repos) return res.status(500).send("Failed to load GitHub data");
-    orgRepos.push(...repos);
+    const orgRepos = await github.fetch(`/orgs/${org}/repos`);
+    if (!orgRepos) return res.status(500).send('Failed to load GitHub data');
+    const filtered = await filterRepos(orgRepos);
+    repos = repos.concat(filtered);
   }
 
   return res
     .status(200)
-    .setHeader("Cache-Control", "max-age=0, public, s-maxage=86400")
-    .send(personalRepos.concat(orgRepos));
+    .setHeader('Cache-Control', `max-age=0, public, s-maxage=${24 * 60 * 60}`)
+    .send(repos);
 }
 
-async function getPersonalRepos(): Promise<RepoType[] | undefined | any> {
-  const repos = await github.fetchFromApi(`/users/${USERNAME}/repos`);
-  if (repos.error) return repos.error;
-
-  const filtered: RepoType[] = [];
-  repos.forEach(async (repo: any) => {
-    filtered.push(await filterRepo(repo));
-  });
-  return filtered;
-}
-
-async function getOrganizations(): Promise<string[] | undefined> {
-  const orgs = await github.fetchFromApi(`/users/${USERNAME}/orgs`);
+export async function getOrganizations(): Promise<String[] | undefined> {
+  const orgs = await github.fetch(`/users/${USERNAME}/orgs`);
   if (orgs.error) return;
   return orgs.map((org: any) => org.login);
 }
 
-async function getOrganizationRepos(
-  org: string,
-): Promise<RepoType[] | undefined> {
-  const repos = await github.fetchFromApi(`/orgs/${org}/repos`);
-  if (repos.error) return;
-
+export async function filterRepos(repos: any[]): Promise<RepoType[]> {
   const filtered: RepoType[] = [];
-  repos.forEach(async (repo: any) => {
+  for (const repo of repos) {
+    if (repo.name.startsWith('.')) continue;
     filtered.push(await filterRepo(repo));
-  });
+  }
   return filtered;
 }
 
-async function filterRepo(repo: any): Promise<RepoType> {
-  console.log(`Filtering '${repo.name}': ${repo.languages_url}`);
-  const languages = await github.fetchFromApi(repo.languages_url);
-  return {
+export async function filterRepo(repo: any): Promise<RepoType> {
+  const languages = await github.fetch(repo.languages_url);
+  const filtered = {
     name: repo.name,
     description: repo.description,
-    href: repo.rul,
+    href: repo.url,
     isPrivate: repo.private,
     website: repo.website ? repo.website : undefined,
     stars: repo.stargazers_count,
@@ -79,4 +65,5 @@ async function filterRepo(repo: any): Promise<RepoType> {
       ...languages,
     },
   };
+  return filtered;
 }

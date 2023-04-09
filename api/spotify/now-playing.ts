@@ -1,18 +1,19 @@
-import type { VercelRequest, VercelResponse } from "@vercel/node";
-import * as spotify from "../../src/spotify/middleware";
-import { NowPlayingType, TrackType } from "../../src/spotify/my-types";
-import { formatURL } from "../../src/util";
+import type { VercelRequest, VercelResponse } from '@vercel/node';
+
+import * as spotify from '../../src/spotify/middleware';
+import { NowPlayingType, TrackType } from '../../src/spotify/types';
+import { formatURL } from '../../src/util';
 
 const REQUEST_URL = formatURL(
-  "https://api.spotify.com/v1/me/player/currently-playing",
+  'https://api.spotify.com/v1/me/player/currently-playing',
 );
 
 export default async function (req: VercelRequest, res: VercelResponse) {
-  const response = await spotify.fetchFromApi(REQUEST_URL);
+  const response = await spotify.fetch(REQUEST_URL);
   const nowPlaying = filterNowPlaying(response);
   res
     .status(200)
-    .setHeader("Cache-Control", "max-age=0, public, s-maxage=1")
+    .setHeader('Cache-Control', `max-age=0, public, s-maxage=${1}`)
     .send(nowPlaying ?? {});
 }
 

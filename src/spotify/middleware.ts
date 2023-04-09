@@ -1,7 +1,5 @@
-import { B64String, GET, POST } from '../util';
+import { GET, POST } from '../fetch';
 
-const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
-const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
 const REFRESH_TOKEN = process.env.SPOTIFY_REFRESH_TOKEN;
 const BASE64 = process.env.SPOTIFY_BASE64;
 
@@ -12,7 +10,7 @@ export const CONFIG = {
   TIME_RANGE: 'short_term', // ≈ last 4 weeks
 };
 
-export async function fetchFromApi(url: string): Promise<any> {
+export async function fetch(url: string): Promise<any> {
   return await GET(url, {
     headers: {
       Authorization: `Bearer ${await getToken()}`,

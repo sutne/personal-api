@@ -7,10 +7,8 @@
         "deploy": "vercel deploy --prod"
     },
     "author": "sutne",
-    "dependencies": {
-        "@vercel/node": "^2.10.2"
-    },
     "devDependencies": {
+        "@vercel/node": "^2.10.2",
         "@types/node": "^18.15.11",
         "typescript": "^5.0.4",
         "vercel": "^28.18.3"

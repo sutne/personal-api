@@ -1,24 +1,27 @@
-import { VercelRequest, VercelResponse } from '@vercel/node';
-import * as github from '../../src/github/middleware';
-import { RepoType } from '../../src/github/types';
+import { VercelRequest, VercelResponse } from "@vercel/node";
+import * as github from "../../src/github/middleware";
+import { RepoType } from "../../src/github/types";
 
 const USERNAME = process.env.GITHUB_USERNAME;
 
 export default async function (req: VercelRequest, res: VercelResponse) {
   const personalRepos = await getPersonalRepos();
-  if (!personalRepos) return res.status(500).send('Failed to load GitHub data');
+  if (!personalRepos) return res.status(500).send("Failed to load GitHub data");
 
   const organizations = await getOrganizations();
-  if (!organizations) return res.status(500).send('Failed to load GitHub data');
+  if (!organizations) return res.status(500).send("Failed to load GitHub data");
 
   const orgRepos: RepoType[] = [];
   for (const org of organizations) {
     const repos = await getOrganizationRepos(org);
-    if (!repos) return res.status(500).send('Failed to load GitHub data');
+    if (!repos) return res.status(500).send("Failed to load GitHub data");
     orgRepos.push(...repos);
   }
 
-  return res.status(200).send(personalRepos.concat(orgRepos));
+  return res
+    .status(200)
+    .setHeader("Cache-Control", "max-age=0, public, s-maxage=86400")
+    .send(personalRepos.concat(orgRepos));
 }
 
 async function getPersonalRepos(): Promise<RepoType[] | undefined | any> {

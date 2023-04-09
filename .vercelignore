@@ -1,8 +1,9 @@
-.gitignore
 .vscode
 node_modules
 scripts
-package-lock.json
-package.json
-*.md
+.env
+.gitignore
 .prettierrc
+package-lock.json
+README.md
+temp*

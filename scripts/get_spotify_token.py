@@ -15,7 +15,7 @@ SCOPES = ",".join(permissions)
 dotenv.load_dotenv(dotenv.find_dotenv())
 SPOTIFY_CLIENT_ID = os.environ.get("SPOTIFY_CLIENT_ID")
 SPOTIFY_CLIENT_SECRET = os.environ.get("SPOTIFY_CLIENT_SECRET")
-SPOTIFY_REDIRECT_URI = "http://localhost/callback/"
+SPOTIFY_REDIRECT_URI = os.environ.get("SPOTIFY_REDIRECT_URI")
 
 if not all([SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT_URI]):
     print("An environment variable was not set")
@@ -57,8 +57,13 @@ command = format_curl(
     },
 )
 
-
 # Step 4: Get the refresh token from the json response, copy it to .env file
 json_response = json.loads(os.popen(command).read())
-print("\n\nResults: Copy refresh_token to .env file as 'SPOTIFY_REFRESH_TOKEN='")
-print("\n".join([f"{key}: {value}" for key, value in json_response.items()]))
+for key, value in json_response.items():
+    if key == "refresh_token":
+        print("Copy the following to your '.env' file:\n")
+        print(f"SPOTIFY_REFRESH_TOKEN={value}")
+        # Vercel for some reason ended up with a different base64 encoding
+        # (that didnt work) so just add it as another variable
+        print(f"SPOTIFY_BASE64={BASE64}")
+        break

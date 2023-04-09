@@ -1,6 +1,12 @@
 import os
 
-# hide output from vercel cli
+
+# WARNING
+# looks like using this script is NOT a good idea as some values
+# have \n appended to them, making them invalid
+
+
+# hides output from vercel cli when appended to command
 suppress = ">/dev/null 2>&1"
 
 # Check if the .env file exists
@@ -11,23 +17,25 @@ if not os.path.isfile(".env"):
 # Read the .env file
 with open(".env", "r") as env_file:
     for nr, line in enumerate(env_file):
-        # Check if the line is not empty
         if not line.strip():
-            continue
-        # Check if the line is not a comment
+            continue  # Skip empty lines
         if line.startswith("#"):
-            continue
-        # Split the line by the equal sign
+            continue  # Skip comments
+
+        # make sure key and value are not empty
         variable = [val.strip() for val in line.split("=", 1)]
-        if not variable or len(variable) != 2:
-            print(f"Invalid line in '.env': {nr}:{line}")
-            continue
-        key, value = variable
-        if not key or not value:
-            print(f"Invalid line in '.env': {nr}:{line}")
+        if len(variable) != 2 or "" in variable:
+            print(f"Invalid line in '.env': {nr}")
             continue
 
-        # Remove the variable if it exists, suppress output
-        os.system(f"vercel env rm {key} -y {suppress}")
-        # Add the variable with local value
-        os.system(f"echo {value} | vercel env add {key} production")
+        key, value = variable
+
+        # Docs say you can add/remove to multiple environments at once, but
+        # i am not able to hence the loop below
+        for env in ["production"]:
+            # Remove the variable if it exists, suppress output
+            os.system(f"vercel env rm {key} {env} -y {suppress}")
+            # Add the variable with local value
+            os.system(f"echo {value} | vercel env add {key} {env}")
+
+print("\nDone")

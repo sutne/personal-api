@@ -13,7 +13,7 @@ def format_curl(url: str, headers: dict = {}, args: dict = {}) -> str:
     if headers:
         curl += " " + " ".join([f'-H "{k}: {v}"' for k, v in headers.items()])
     if args:
-        curl += " -d " + "&".join([f"{k}={v}" for k, v in args.items()])
+        curl += ' -d "' + "&".join([f"{k}={v}" for k, v in args.items()]) + '"'
     return f"{curl} {url}"
 
 

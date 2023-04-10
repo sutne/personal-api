@@ -1,11 +1,9 @@
-import { GET } from "../util";
+import { exchangeRefreshTokenForAuthTokens } from 'psn-api';
 
-const PLAYSTATION_COOKIE = process.env.PLAYSTATION_COOKIE;
+const REFRESH_TOKEN = process.env.PLAYSTATION_REFRESH_TOKEN;
 
-export async function fetchFromApi(url: string): Promise<any> {
-  return await GET(url, {
-    headers: {
-      "cookie": PLAYSTATION_COOKIE ?? "",
-    },
-  });
+export async function getAuth(): Promise<any> {
+  if (!REFRESH_TOKEN) throw new Error('No refresh token provided.');
+  const auth = await exchangeRefreshTokenForAuthTokens(REFRESH_TOKEN);
+  return auth;
 }

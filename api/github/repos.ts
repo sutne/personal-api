@@ -46,14 +46,16 @@ export async function filterRepo(repo: any): Promise<RepoType> {
   const filtered = {
     name: repo.name,
     description: repo.description,
-    href: repo.url,
+    href: repo.html_url,
     isPrivate: repo.private,
+    isArchived: repo.archived,
     website: repo.website ? repo.website : undefined,
     stars: repo.stargazers_count,
     issues: repo.open_issues,
     forks: repo.forks,
     createdAt: repo.created_at,
     updatedAt: repo.updated_at,
+    topics: repo.topics,
     owner: {
       name: repo.owner.login,
       image: repo.owner.avatar_url,

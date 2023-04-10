@@ -6,8 +6,10 @@ export type RepoType = {
   forks: number;
   issues: number;
   isPrivate: boolean;
+  isArchived: boolean;
   createdAt: number;
   updatedAt: number;
+  topics: string[];
   website: string | undefined;
   owner: {
     name: string;

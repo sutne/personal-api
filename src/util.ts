@@ -17,7 +17,7 @@ export function B64String(str: string) {
   return Buffer.from(str).toString('base64');
 }
 
-export function convert(data: any, contentType: string | undefined) {
+export function convert(data: any, contentType?: string) {
   if (!data || !contentType) return data;
   if (typeof data === 'string') return data;
   switch (contentType) {
@@ -38,4 +38,12 @@ export function writeJSON(filename: string, data: any) {
   const path = `${filename}.json`;
   const dataString = JSON.stringify(data, null, 2);
   fs.writeFile(path, dataString, (err: any) => console.error(err));
+}
+
+export function earliestDate(a: string | undefined, b: string | undefined) {
+  if (!a) return b;
+  if (!b) return a;
+  const aDate = new Date(a);
+  const bDate = new Date(b);
+  return aDate < bDate ? a : b;
 }

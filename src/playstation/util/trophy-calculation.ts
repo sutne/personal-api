@@ -1,5 +1,5 @@
 import { ProfileFromUserNameResponse } from 'psn-api';
-import { TrophySummary } from './types';
+import { TrophyCount, TrophySummary } from '../types';
 import * as psn from 'psn-api';
 
 export const rarityMap: Record<psn.TrophyRarity, string> = {
@@ -29,9 +29,9 @@ function pointsToNextLevel(level: number): number {
   return 3600;
 }
 
-export function calculateTrophyPoints(summary: TrophySummary): number {
+export function getTrophyPoints(counts: TrophyCount): number {
   let totalPoints = 0;
-  Object.entries(summary.earned).forEach((trophy) => {
+  Object.entries(counts).forEach((trophy) => {
     const [type, count] = trophy;
     totalPoints += count * TrophyPoints[type];
   });
@@ -48,27 +48,4 @@ export function getTrophyLevel(trophyPoints: number): number {
     level += 1;
   }
   return level;
-}
-
-export function combineTrophies(
-  account1: ProfileFromUserNameResponse,
-  account2: ProfileFromUserNameResponse,
-): TrophySummary {
-  return {
-    level: 0,
-    earned: {
-      bronze:
-        account1.profile.trophySummary.earnedTrophies.bronze +
-        account2.profile.trophySummary.earnedTrophies.bronze,
-      silver:
-        account1.profile.trophySummary.earnedTrophies.silver +
-        account2.profile.trophySummary.earnedTrophies.silver,
-      gold:
-        account1.profile.trophySummary.earnedTrophies.gold +
-        account2.profile.trophySummary.earnedTrophies.gold,
-      platinum:
-        account1.profile.trophySummary.earnedTrophies.platinum +
-        account2.profile.trophySummary.earnedTrophies.platinum,
-    },
-  };
 }

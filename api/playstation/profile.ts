@@ -2,28 +2,26 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 import { getProfile } from '../../src/playstation/middleware';
 import {
-  calculateTrophyPoints,
-  combineTrophies,
+  getTrophyPoints,
   getTrophyLevel,
-} from '../../src/playstation/trophy-calculation';
+} from '../../src/playstation/util/trophy-calculation';
+import { TrophyCount } from '../../src/playstation/types';
 
 export default async function (req: VercelRequest, res: VercelResponse) {
-  // I Have 2 accounts so merge the trophy stats for both
-  // will filter later so there are no overlapping trophies for games (theres only like 2)
-  const response1 = await getProfile('Sutne_');
-  const response2 = await getProfile('Sivvi__');
+  const primary = await getProfile('Sutne_');
+  const secondary = await getProfile('Sivvi__');
 
-  const combined = combineTrophies(response1, response2);
-  const trophyPoints = calculateTrophyPoints(combined);
-  const fixedTrophyLevel = getTrophyLevel(trophyPoints);
+  const combined = combineCounts(
+    primary.profile.trophySummary.earnedTrophies,
+    secondary.profile.trophySummary.earnedTrophies,
+  );
 
   const profile = {
-    onlineId: response1.profile.onlineId,
-    accountId: response1.profile.accountId,
-    avatar: response1.profile.avatarUrls[0].avatarUrl,
+    onlineId: primary.profile.onlineId,
+    avatar: primary.profile.avatarUrls[0].avatarUrl,
     trophySummary: {
-      level: fixedTrophyLevel,
-      earned: combined.earned,
+      level: getTrophyLevel(getTrophyPoints(combined)),
+      earned: combined,
     },
   };
 
@@ -31,4 +29,13 @@ export default async function (req: VercelRequest, res: VercelResponse) {
     .status(200)
     .setHeader('Cache-Control', `max-age=0, public, s-maxage=${3 * 60 * 60}`)
     .send(profile);
+}
+
+function combineCounts(a: TrophyCount, b: TrophyCount): TrophyCount {
+  return {
+    bronze: a.bronze + b.bronze,
+    silver: a.silver + b.silver,
+    gold: a.gold + b.gold,
+    platinum: a.platinum + b.platinum,
+  };
 }

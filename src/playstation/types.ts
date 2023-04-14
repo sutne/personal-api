@@ -18,39 +18,42 @@ export type TrophyCount = {
   platinum: number;
 };
 
-export type Game = RecentGame & {
-  trophyCount: TrophyCount;
-  earnedCount: TrophyCount;
-  trophyGroups: TrophyGroup[];
-};
-
-export type TrophyGroup = {
-  id: string;
-  name: string;
-  image: string;
-  trophyCount: TrophyCount;
-  earnedCount: TrophyCount;
-  trophies: Trophy[];
-};
-
-export type Trophy = {
-  id: string;
-  title: string;
-  description: string;
-  isEarned: boolean;
-  isHidden: boolean;
-  image: string;
-  earnedAt: string;
-  type: TrophyType;
-  /** % of players who have earned this trophy */
-  rarity: string;
-  progress: number;
-};
-
 export type RecentGame = {
   id: string;
   title: string;
   image: string;
   platform: string;
   lastPlayedAt: string;
+};
+
+export type TrophyGame = {
+  id: string;
+  title: string;
+  image: string;
+  platform: string;
+  trophyCount: TrophyCount;
+  earnedCount: TrophyCount;
+  progress: number;
+};
+
+export type TrophyGroup = {
+  name: string;
+  icon: string;
+  trophyCount: TrophyCount;
+  earnedCount: TrophyCount;
+  progress: number;
+  trophies: Trophy[];
+};
+
+export type Trophy = {
+  title: string;
+  description: string;
+  isEarned: boolean;
+  isHidden: boolean;
+  icon: string;
+  earnedAt: string | undefined;
+  type: TrophyType;
+  /** % of players who have earned this trophy */
+  rarity: string | undefined;
+  progress: string | undefined;
 };

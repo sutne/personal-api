@@ -1,9 +1,4 @@
 import * as psn from 'psn-api';
-import {
-  calculateTrophyPoints,
-  combineTrophies,
-  getTrophyLevel,
-} from './trophy-calculation';
 
 const REFRESH_TOKEN = process.env.PLAYSTATION_REFRESH_TOKEN;
 
@@ -14,52 +9,47 @@ async function getAuth(): Promise<any> {
 }
 
 export async function getProfile(username: string) {
-  const auth = await getAuth();
-  return await psn.getProfileFromUserName(auth, username);
+  const result = await psn.getProfileFromUserName(await getAuth(), username);
+  return result;
 }
 
-export async function getAccountId(onlineId: string) {
-  const result = await psn.makeUniversalSearch(
-    await getAuth(),
-    onlineId,
-    'SocialAllAccounts',
-  );
-  return result.domainResponses[0].results[0].socialMetadata.accountId;
-}
-
-export async function getGameList(user: string = 'me') {
-  const userId = user == 'me' ? 'me' : await getAccountId(user);
+export async function getGameList(userId: string) {
   const response = await psn.getUserTitles(await getAuth(), userId);
   return response.trophyTitles;
 }
 
-export async function getGameTrophies(title: psn.TrophyTitle) {
-  const response = await psn.getTitleTrophies(
+export async function getGameTrophies(gameId: string, platform: string) {
+  const npServiceName = platform === 'PS5' ? undefined : 'trophy';
+  const response = await psn.getTitleTrophies(await getAuth(), gameId, 'all', {
+    npServiceName: npServiceName,
+  });
+  return response.trophies;
+}
+
+export async function getEarnedTrophies(
+  gameId: string,
+  platform: string,
+  userId: string,
+) {
+  const npServiceName = platform === 'PS5' ? undefined : 'trophy';
+  const response = await psn.getUserTrophiesEarnedForTitle(
     await getAuth(),
-    title.npCommunicationId,
+    userId,
+    gameId,
     'all',
     {
-      npServiceName: title.trophyTitlePlatform !== 'PS5' ? 'trophy' : undefined,
+      npServiceName: npServiceName,
     },
   );
   return response.trophies;
 }
 
-export async function getEarnedTrophies(
-  title: psn.TrophyTitle,
-  user: string = 'me',
-) {
-  const userId = user == 'me' ? 'me' : await getAccountId(user);
-  const response = await psn.getUserTrophiesEarnedForTitle(
-    await getAuth(),
-    userId,
-    title.npCommunicationId,
-    'all',
-    {
-      npServiceName: title.trophyTitlePlatform !== 'PS5' ? 'trophy' : undefined,
-    },
-  );
-  return response.trophies;
+export async function getTrophyGroupInfo(gameId: string, platform: string) {
+  const npServiceName = platform === 'PS5' ? undefined : 'trophy';
+  const response = await psn.getTitleTrophyGroups(await getAuth(), gameId, {
+    npServiceName: npServiceName,
+  });
+  return response.trophyGroups;
 }
 
 export async function getRecentlyPlayedGames() {

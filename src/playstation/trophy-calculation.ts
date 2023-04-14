@@ -1,12 +1,20 @@
 import { ProfileFromUserNameResponse } from 'psn-api';
 import { TrophySummary } from './types';
+import * as psn from 'psn-api';
 
-const TrophyPoints: Map<string, number> = new Map([
-  ['bronze', 15],
-  ['silver', 30],
-  ['gold', 90],
-  ['platinum', 300],
-]);
+export const rarityMap: Record<psn.TrophyRarity, string> = {
+  [psn.TrophyRarity.VeryRare]: 'Very Rare',
+  [psn.TrophyRarity.UltraRare]: 'Ultra Rare',
+  [psn.TrophyRarity.Rare]: 'Rare',
+  [psn.TrophyRarity.Common]: 'Common',
+};
+
+const TrophyPoints: Record<string, number> = {
+  ['bronze']: 15,
+  ['silver']: 30,
+  ['gold']: 90,
+  ['platinum']: 300,
+};
 
 function pointsToNextLevel(level: number): number {
   if (level < 100) return 60;
@@ -25,9 +33,7 @@ export function calculateTrophyPoints(summary: TrophySummary): number {
   let totalPoints = 0;
   Object.entries(summary.earned).forEach((trophy) => {
     const [type, count] = trophy;
-    const trophyPoints = TrophyPoints.get(type);
-    if (!trophyPoints) throw new Error(`Invalid trophy type: ${type}`);
-    totalPoints += count * trophyPoints;
+    totalPoints += count * TrophyPoints[type];
   });
   return totalPoints;
 }

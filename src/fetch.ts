@@ -48,9 +48,9 @@ async function MyFetch(url: string, args: {}): Promise<any> {
     const response = await fetch(url, args);
     // Make sure request was successful
     if (!response.ok) {
-      error = await response.json();
       throw new Error(`${response.status} ${response.statusText}`);
     }
+    if (!response.body) return undefined;
     // Make sure response doesn't contain an error
     const data = await response.json();
     if (data.error) {

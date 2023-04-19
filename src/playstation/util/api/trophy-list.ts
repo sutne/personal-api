@@ -46,14 +46,15 @@ export async function getTrophyGroups(id: string, platform: string) {
     const groupIndex = getGroupIndex(t.trophyGroupId);
 
     const trophy: Trophy = {
+      id: t.trophyId,
       title: t.trophyName ?? '',
       description: t.trophyDetail ?? '',
       icon: t.trophyIconUrl ?? '',
       type: t.trophyType,
       isHidden: t.trophyHidden,
+      rarity: undefined,
       isEarned: false,
       earnedAt: undefined,
-      rarity: undefined,
       progress: undefined,
     };
 
@@ -61,10 +62,10 @@ export async function getTrophyGroups(id: string, platform: string) {
     for (const earned of accountTrophies) {
       const e = earned[i];
       assert(e.trophyId === t.trophyId, 'Trophy ID mismatch');
-      if (!e.earned) continue;
-
-      trophy.isEarned = true;
       trophy.rarity = e.trophyEarnedRate;
+
+      if (!e.earned) continue;
+      trophy.isEarned = true;
       trophy.earnedAt = earliestDate(trophy.earnedAt, e.earnedDateTime);
     }
 
@@ -79,7 +80,6 @@ export async function getTrophyGroups(id: string, platform: string) {
     const earnedPoints = getTrophyPoints(g.earnedCount);
     g.progress = Math.round((100 * earnedPoints) / totalPoints);
   }
-  console.log({ groups });
 
   return groups;
 }

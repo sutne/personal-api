@@ -19,7 +19,6 @@ export type TrophyCount = {
 };
 
 export type RecentGame = {
-  id: string;
   title: string;
   image: string;
   platform: string;
@@ -46,6 +45,7 @@ export type TrophyGroup = {
 };
 
 export type Trophy = {
+  id: number;
   title: string;
   description: string;
   isEarned: boolean;

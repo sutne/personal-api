@@ -33,11 +33,10 @@ export async function getOrganizations(): Promise<String[] | undefined> {
 }
 
 export async function filterRepos(repos: any[]): Promise<RepoType[]> {
-  const filtered: RepoType[] = [];
-  for (const repo of repos) {
-    if (repo.name.startsWith('.')) continue;
-    filtered.push(await filterRepo(repo));
-  }
+  const withoutSecrets = repos.filter((repo) => !repo.name.startsWith('.'));
+  const filtered: RepoType[] = await Promise.all(
+    withoutSecrets.map((repo) => filterRepo(repo)),
+  );
   return filtered;
 }
 

@@ -26,8 +26,10 @@ export default async function (req: VercelRequest, res: VercelResponse) {
 
   // get language stats for each repo
   let languages: Map<string, number> = new Map();
-  for (const repo of repos) {
-    const lang = await github.fetch(repo.languages_url);
+  const langs = await Promise.all(
+    repos.map((repo) => github.fetch(repo.languages_url)),
+  );
+  for (const lang of langs) {
     const size = Object.keys(lang).reduce((sum, key) => sum + lang[key], 0);
     totalSize += size;
     for (const key in lang) {

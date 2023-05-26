@@ -5,10 +5,10 @@ import { exchangeCodeForAccessToken, exchangeNpssoForCode } from 'psn-api';
 
 // Follow instruction from psn-api to acquire NPSSO-Session-Token
 // https://psn-api.achievements.app/authentication/authenticating-manually
-const NPSSO = '<64-char-token>';
+const token = { npsso: '<64-char-token>' };
 
 async function getTokens() {
-  const accessCode = await exchangeNpssoForCode(NPSSO);
+  const accessCode = await exchangeNpssoForCode(token.npsso);
   console.log({ accessCode });
   const authorization = await exchangeCodeForAccessToken(accessCode);
   console.log({ authorization });

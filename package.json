@@ -1,13 +1,13 @@
 {
-    "scripts": {
-        "start": "vercel dev",
-        "deploy": "vercel deploy --prod"
-    },
-    "devDependencies": {
-        "psn-api": "^2.9.0",
-        "@vercel/node": "^2.10.3",
-        "@types/node": "^18.15.11",
-        "vercel": "^28.18.4",
-        "typescript": "^5.0.4"
-    }
+  "scripts": {
+    "start": "vercel dev",
+    "deploy": "vercel deploy --prod"
+  },
+  "devDependencies": {
+    "@types/node": "^18.16.3",
+    "@vercel/node": "^2.14.0",
+    "psn-api": "^2.9.0",
+    "typescript": "^5.0.4",
+    "vercel": "^29.0.3"
+  }
 }

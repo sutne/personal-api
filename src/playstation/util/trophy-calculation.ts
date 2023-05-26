@@ -1,13 +1,4 @@
-import { ProfileFromUserNameResponse } from 'psn-api';
-import { TrophyCount, TrophySummary } from '../types';
-import * as psn from 'psn-api';
-
-export const rarityMap: Record<psn.TrophyRarity, string> = {
-  [psn.TrophyRarity.VeryRare]: 'Very Rare',
-  [psn.TrophyRarity.UltraRare]: 'Ultra Rare',
-  [psn.TrophyRarity.Rare]: 'Rare',
-  [psn.TrophyRarity.Common]: 'Common',
-};
+import { TrophyCount } from '../types';
 
 const TrophyPoints: Record<string, number> = {
   ['bronze']: 15,

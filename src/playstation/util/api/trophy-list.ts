@@ -78,7 +78,7 @@ export async function getTrophyGroups(id: string, platform: string) {
   for (const g of groups) {
     const totalPoints = getTrophyPoints(g.trophyCount);
     const earnedPoints = getTrophyPoints(g.earnedCount);
-    g.progress = Math.round((100 * earnedPoints) / totalPoints);
+    g.progress = Math.ceil((100 * earnedPoints) / totalPoints);
   }
 
   return groups;

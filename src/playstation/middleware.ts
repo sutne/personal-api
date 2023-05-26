@@ -1,6 +1,6 @@
 import * as psn from 'psn-api';
 
-const REFRESH_TOKEN = process.env.PLAYSTATION_REFRESH_TOKEN;
+const REFRESH_TOKEN = process.env.PLAYSTATION_REFRESH_TOKEN?.trim();
 
 async function getAuth(): Promise<any> {
   if (!REFRESH_TOKEN) throw new Error('No refresh token provided.');

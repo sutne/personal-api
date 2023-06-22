@@ -1,7 +1,7 @@
 import { GET, POST } from '../fetch';
 
-const REFRESH_TOKEN = process.env.SPOTIFY_REFRESH_TOKEN?.trim();
-const BASE64 = process.env.SPOTIFY_BASE64?.trim();
+const REFRESH_TOKEN = process.env.SPOTIFY_REFRESH_TOKEN?.trim() ?? '';
+const BASE64 = process.env.SPOTIFY_BASE64?.trim() ?? '';
 
 const REFRESH_TOKEN_URL = 'https://accounts.spotify.com/api/token';
 

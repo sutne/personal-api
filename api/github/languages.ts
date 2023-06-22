@@ -4,7 +4,7 @@ import * as github from '../../src/github/middleware';
 
 import { getOrganizations } from './repos';
 
-const USERNAME = process.env.GITHUB_USERNAME;
+const USERNAME = process.env.GITHUB_USERNAME?.trim() ?? '';
 
 export default async function (req: VercelRequest, res: VercelResponse) {
   let totalSize = 0;

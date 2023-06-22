@@ -3,7 +3,7 @@ import { VercelRequest, VercelResponse } from '@vercel/node';
 import * as github from '../../src/github/middleware';
 import { RepoType } from '../../src/github/types';
 
-const USERNAME = process.env.GITHUB_USERNAME;
+const USERNAME = process.env.GITHUB_USERNAME?.trim() ?? '';
 
 export default async function (req: VercelRequest, res: VercelResponse) {
   let repos = await github.fetch(`/users/${USERNAME}/repos`);

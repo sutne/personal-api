@@ -40,10 +40,27 @@ export function writeJSON(filename: string, data: any) {
   fs.writeFile(path, dataString, (err: any) => console.error(err));
 }
 
-export function earliestDate(a: string | undefined, b: string | undefined) {
-  if (!a) return b;
-  if (!b) return a;
-  const aDate = new Date(a);
-  const bDate = new Date(b);
-  return aDate < bDate ? a : b;
+/**
+ * @returns positive if a is a before b, negative if b is before a
+ */
+export function compareDate(
+  a: string | undefined,
+  b: string | undefined,
+): number {
+  if (!a && !b) return 0;
+  if (!a) return 1;
+  if (!b) return -1;
+  const aTime = new Date(a).getTime();
+  const bTime = new Date(b).getTime();
+  return bTime - aTime;
+}
+
+/**
+ * @returns the earliest of the two date strings.
+ */
+export function earliestDate(
+  a: string | undefined,
+  b: string | undefined,
+): string | undefined {
+  return compareDate(a, b) < 0 ? a : b;
 }

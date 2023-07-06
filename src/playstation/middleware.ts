@@ -15,7 +15,10 @@ export async function getProfile(username: string) {
 
 export async function getGameList(userId: string) {
   const response = await psn.getUserTitles(await getAuth(), userId);
-  return response.trophyTitles;
+  const filtered = response.trophyTitles.filter(
+    (title) => !title.hiddenFlag && title.progress > 0,
+  );
+  return filtered;
 }
 
 export async function getGameTrophies(gameId: string, platform: string) {

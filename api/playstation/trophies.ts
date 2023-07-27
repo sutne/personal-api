@@ -3,7 +3,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { getGames } from '../../src/playstation/util/api/game-list';
 import { getTrophyGroups } from '../../src/playstation/util/api/trophy-list';
 import { TrophyGame } from '../../src/playstation/types';
-import { compareDate } from '../../src/util';
+import { cacheControl, compareDate } from '../../src/util';
 
 /**
  * @returns either trophy overview for a game, or all trophies associated with
@@ -43,6 +43,6 @@ export default async function (req: VercelRequest, res: VercelResponse) {
 
   return res
     .status(200)
-    .setHeader('Cache-Control', `max-age=0, public, s-maxage=${3 * 60 * 60}`)
+    .setHeader('Cache-Control', cacheControl({ hours: 1 }))
     .send(response);
 }

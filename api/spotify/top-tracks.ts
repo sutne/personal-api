@@ -2,7 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 import * as spotify from '../../src/spotify/middleware';
 import { TrackType } from '../../src/spotify/types';
-import { formatURL } from '../../src/util';
+import { cacheControl, formatURL } from '../../src/util';
 
 import { filterTrack } from './now-playing';
 
@@ -24,6 +24,6 @@ export default async function (req: VercelRequest, res: VercelResponse) {
   tracks = tracks.filter((track) => track !== undefined);
   return res
     .status(200)
-    .setHeader('Cache-Control', `max-age=0, public, s-maxage=${24 * 60 * 60}`)
+    .setHeader('Cache-Control', cacheControl({ days: 1 }))
     .send(tracks);
 }

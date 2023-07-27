@@ -2,6 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 import { getRecentlyPlayedGames } from '../../src/playstation/middleware';
 import { RecentGame } from '../../src/playstation/types';
+import { cacheControl } from '../../src/util';
 
 export default async function (req: VercelRequest, res: VercelResponse) {
   const games = await getRecentlyPlayedGames();
@@ -16,6 +17,6 @@ export default async function (req: VercelRequest, res: VercelResponse) {
   });
   return res
     .status(200)
-    .setHeader('Cache-Control', `max-age=0, public, s-maxage=${3 * 60 * 60}`)
+    .setHeader('Cache-Control', cacheControl({ hours: 3 }))
     .send(filtered);
 }

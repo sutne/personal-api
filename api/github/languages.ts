@@ -3,6 +3,7 @@ import { VercelRequest, VercelResponse } from '@vercel/node';
 import * as github from '../../src/github/middleware';
 
 import { getOrganizations } from './repos';
+import { cacheControl } from '../../src/util';
 
 const USERNAME = process.env.GITHUB_USERNAME?.trim() ?? '';
 
@@ -44,10 +45,7 @@ export default async function (req: VercelRequest, res: VercelResponse) {
 
   return res
     .status(200)
-    .setHeader(
-      'Cache-Control',
-      `max-age=0, public, s-maxage=${7 * 24 * 60 * 60}`,
-    )
+    .setHeader('Cache-Control', cacheControl({ days: 7 }))
     .send({
       total: totalSize,
       languages: Object.fromEntries(sorted),

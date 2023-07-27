@@ -1,109 +1,109 @@
 {
-    // More info: https://code.visualstudio.com/docs/editor/tasks
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "Install",
-            "icon": {
-                "id": "desktop-download",
-                "color": "terminal.ansiYellow"
-            },
-            "type": "shell",
-            "dependsOn": "Clean",
-            "command": "npm install",
-            "presentation": {
-                "panel": "dedicated",
-                "reveal": "always",
-                "showReuseMessage": false,
-                "focus": false,
-                "clear": true,
-                "echo": true,
-            },
-        },
-        {
-            "label": "Develop",
-            "icon": {
-                "id": "debug",
-                "color": "terminal.ansiBlue"
-            },
-            "type": "shell",
-            "command": "npm start",
-            "presentation": {
-                "panel": "dedicated",
-                "reveal": "always",
-                "showReuseMessage": false,
-                "focus": false,
-                "clear": true,
-                "echo": true,
-            },
-        },
-        {
-            "label": "Deploy",
-            "icon": {
-                "id": "cloud-upload",
-                "color": "terminal.ansiGreen"
-            },
-            "type": "shell",
-            "command": "npm run deploy",
-            "presentation": {
-                "panel": "dedicated",
-                "reveal": "always",
-                "showReuseMessage": false,
-                "focus": false,
-                "clear": true,
-                "echo": true,
-            },
-        },
-        {
-            "label": "Clean",
-            "icon": {
-                "id": "trash",
-                "color": "terminal.ansiRed"
-            },
-            "type": "shell",
-            "command": "rm -rf node_modules package-lock.json build",
-            "presentation": {
-                "panel": "dedicated",
-                "reveal": "always",
-                "showReuseMessage": false,
-                "focus": false,
-                "clear": true,
-                "echo": true,
-            },
-        },
-        {
-            "label": "Upload '.env'",
-            "icon": {
-                "id": "sync",
-                "color": "terminal.ansiYellow"
-            },
-            "type": "shell",
-            "command": "python3 scripts/sync-env.py",
-            "presentation": {
-                "panel": "dedicated",
-                "reveal": "always",
-                "showReuseMessage": false,
-                "focus": false,
-                "clear": true,
-                "echo": true,
-            },
-        },
-        {
-            "label": "Download '.env'",
-            "icon": {
-                "id": "sync",
-                "color": "terminal.ansiYellow"
-            },
-            "type": "shell",
-            "command": "vercel pull --environment=production",
-            "presentation": {
-                "panel": "dedicated",
-                "reveal": "always",
-                "showReuseMessage": false,
-                "focus": false,
-                "clear": true,
-                "echo": true,
-            },
-        },
-    ]
+  // More info: https://code.visualstudio.com/docs/editor/tasks
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Install",
+      "icon": {
+        "id": "desktop-download",
+        "color": "terminal.ansiYellow"
+      },
+      "type": "shell",
+      "dependsOn": "Clean",
+      "command": "npm install",
+      "presentation": {
+        "panel": "dedicated",
+        "reveal": "always",
+        "showReuseMessage": false,
+        "focus": false,
+        "clear": true,
+        "echo": true
+      }
+    },
+    {
+      "label": "Develop",
+      "icon": {
+        "id": "debug",
+        "color": "terminal.ansiBlue"
+      },
+      "type": "shell",
+      "command": "npm start",
+      "presentation": {
+        "panel": "dedicated",
+        "reveal": "always",
+        "showReuseMessage": false,
+        "focus": false,
+        "clear": true,
+        "echo": true
+      }
+    },
+    {
+      "label": "Deploy",
+      "icon": {
+        "id": "cloud-upload",
+        "color": "terminal.ansiGreen"
+      },
+      "type": "shell",
+      "command": "npm run deploy",
+      "presentation": {
+        "panel": "dedicated",
+        "reveal": "always",
+        "showReuseMessage": false,
+        "focus": false,
+        "clear": true,
+        "echo": true
+      }
+    },
+    {
+      "label": "Clean",
+      "icon": {
+        "id": "trash",
+        "color": "terminal.ansiRed"
+      },
+      "type": "shell",
+      "command": "rm -rf node_modules package-lock.json build",
+      "presentation": {
+        "panel": "dedicated",
+        "reveal": "always",
+        "showReuseMessage": false,
+        "focus": false,
+        "clear": true,
+        "echo": true
+      }
+    },
+    {
+      "label": "Upload '.env'",
+      "icon": {
+        "id": "sync",
+        "color": "terminal.ansiYellow"
+      },
+      "type": "shell",
+      "command": "python3 scripts/sync-env.py",
+      "presentation": {
+        "panel": "dedicated",
+        "reveal": "always",
+        "showReuseMessage": false,
+        "focus": false,
+        "clear": true,
+        "echo": true
+      }
+    },
+    {
+      "label": "Download '.env'",
+      "icon": {
+        "id": "sync",
+        "color": "terminal.ansiYellow"
+      },
+      "type": "shell",
+      "command": "vercel pull --environment=production",
+      "presentation": {
+        "panel": "dedicated",
+        "reveal": "always",
+        "showReuseMessage": false,
+        "focus": false,
+        "clear": true,
+        "echo": true
+      }
+    }
+  ]
 }

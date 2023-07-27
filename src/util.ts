@@ -64,3 +64,22 @@ export function earliestDate(
 ): string | undefined {
   return compareDate(a, b) < 0 ? a : b;
 }
+
+type Time = {
+  days?: number;
+  hours?: number;
+  minutes?: number;
+  seconds?: number;
+};
+/**
+ * @returns Cache-Control header string with the given time in the format:
+ * `max-age=0, public, s-maxage=${time}`
+ */
+export function cacheControl({ days, hours, minutes, seconds }: Time): string {
+  const totalSeconds =
+    (days ?? 0) * 24 * 60 * 60 +
+    (hours ?? 0) * 60 * 60 +
+    (minutes ?? 0) * 60 +
+    (seconds ?? 0);
+  return `max-age=0, public, s-maxage=${totalSeconds}`;
+}

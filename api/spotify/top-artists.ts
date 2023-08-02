@@ -1,12 +1,13 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 import * as spotify from '../../src/spotify/middleware';
+import { CONFIG } from '../../src/spotify/config';
 import { ArtistType } from '../../src/spotify/types';
 import { cacheControl, formatURL } from '../../src/util';
 
 const REQUEST_URL = formatURL('https://api.spotify.com/v1/me/top/artists', {
-  limit: spotify.CONFIG.LIMIT,
-  time_range: spotify.CONFIG.TIME_RANGE,
+  limit: CONFIG.LIMIT,
+  time_range: CONFIG.TIME_RANGE,
 });
 
 export default async function (req: VercelRequest, res: VercelResponse) {

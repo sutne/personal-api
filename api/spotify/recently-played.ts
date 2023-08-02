@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 import * as spotify from '../../src/spotify/middleware';
+import { CONFIG } from '../../src/spotify/config';
 import { TrackType } from '../../src/spotify/types';
 import { cacheControl, formatURL } from '../../src/util';
 
@@ -9,7 +10,7 @@ import { filterTrack } from './now-playing';
 const REQUEST_URL = formatURL(
   'https://api.spotify.com/v1/me/player/recently-played',
   {
-    limit: spotify.CONFIG.LIMIT,
+    limit: CONFIG.LIMIT,
   },
 );
 

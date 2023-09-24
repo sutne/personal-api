@@ -14,9 +14,10 @@ export async function getGames() {
     for (const newTitle of accountGames) {
       // check if title exists in games already
       const oldTitle = games.find((g) => id(g) === id(newTitle));
-      if (!oldTitle) games.push(newTitle);
-      // Only keep the title with the highest points
-      else {
+      if (!oldTitle) {
+        games.push(newTitle);
+      } else {
+        // Only keep the title with the highest points
         const newPoints = getTrophyPoints(newTitle.earnedTrophies);
         const oldPoints = getTrophyPoints(oldTitle.earnedTrophies);
         if (newPoints > oldPoints) {

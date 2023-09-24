@@ -3,7 +3,7 @@
     "start": "vercel dev",
     "deploy": "vercel deploy --prod"
   },
-  "dev-dependencies": {
+  "devDependencies": {
     "@types/node": "^20.4.0",
     "@vercel/node": "^3.0.6",
     "psn-api": "^2.10.0",

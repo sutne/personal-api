@@ -21,13 +21,14 @@ export default async function (req: VercelRequest, res: VercelResponse) {
     console.error({ response });
     return res.status(404).send([]);
   }
-  let tracks: (TrackType | undefined)[] = items.map((track: any) =>
-    filterTrack(track.track),
+  const tracks: TrackType[] = items
+    .map((track: any) => filterTrack(track.track))
+    .filter((t: TrackType | undefined) => t !== undefined);
+  const unique = tracks.filter(
+    (track, i) => i === tracks.findIndex((t) => t.href === track.href),
   );
-  tracks = tracks.filter((track) => track !== undefined);
-  tracks = tracks.filter((track, i) => tracks.indexOf(track) === i);
   return res
     .status(200)
     .setHeader('Cache-Control', cacheControl({ seconds: 1 }))
-    .send(tracks);
+    .send(unique);
 }

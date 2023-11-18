@@ -8,12 +8,14 @@ async function getAuth(): Promise<any> {
   return auth;
 }
 
-export async function getProfile(username: string) {
+export async function getProfile(
+  username: string,
+): Promise<psn.ProfileFromUserNameResponse> {
   const result = await psn.getProfileFromUserName(await getAuth(), username);
   return result;
 }
 
-export async function getGameList(userId: string) {
+export async function getGameList(userId: string): Promise<psn.TrophyTitle[]> {
   const response = await psn.getUserTitles(await getAuth(), userId);
   const filtered = response.trophyTitles.filter(
     (title) => !title.hiddenFlag && title.progress > 0,
@@ -21,7 +23,10 @@ export async function getGameList(userId: string) {
   return filtered;
 }
 
-export async function getGameTrophies(gameId: string, platform: string) {
+export async function getGameTrophies(
+  gameId: string,
+  platform: string,
+): Promise<(psn.TitleThinTrophy & { trophyProgressTargetValue?: string })[]> {
   const npServiceName = platform === 'PS5' ? undefined : 'trophy';
   const response = await psn.getTitleTrophies(await getAuth(), gameId, 'all', {
     npServiceName: npServiceName,
@@ -33,7 +38,7 @@ export async function getEarnedTrophies(
   gameId: string,
   platform: string,
   userId: string,
-) {
+): Promise<(psn.UserThinTrophy & { progress?: string })[]> {
   const npServiceName = platform === 'PS5' ? undefined : 'trophy';
   const response = await psn.getUserTrophiesEarnedForTitle(
     await getAuth(),

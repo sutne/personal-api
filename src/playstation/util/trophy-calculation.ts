@@ -24,7 +24,9 @@ export function getTrophyPoints(counts: TrophyCount): number {
   let totalPoints = 0;
   Object.entries(counts).forEach((trophy) => {
     const [type, count] = trophy;
-    totalPoints += count * TrophyPoints[type];
+    if (type !== 'platinum') {
+      totalPoints += count * TrophyPoints[type];
+    }
   });
   return totalPoints;
 }

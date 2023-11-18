@@ -37,36 +37,48 @@ export async function getTrophyGroups(id: string, platform: string) {
       getEarnedTrophies(id, platform, accountId).catch(() => []),
     ),
   );
-  const accountTrophies: UserThinTrophy[][] = accountResults.filter(
-    (list) => list.length > 0,
-  );
+  const accountTrophies = accountResults.filter((list) => list.length > 0);
 
   for (let i = 0; i < trophiesInfo.length; i++) {
-    const t = trophiesInfo[i];
-    const groupIndex = getGroupIndex(t.trophyGroupId);
+    const trophyInfo = trophiesInfo[i];
+    const groupIndex = getGroupIndex(trophyInfo.trophyGroupId);
 
     const trophy: Trophy = {
-      id: t.trophyId,
-      title: t.trophyName ?? '',
-      description: t.trophyDetail ?? '',
-      icon: t.trophyIconUrl ?? '',
-      type: t.trophyType,
-      isHidden: t.trophyHidden,
-      rarity: undefined,
+      id: trophyInfo.trophyId,
+      title: trophyInfo.trophyName ?? '',
+      description: trophyInfo.trophyDetail ?? '',
+      icon: trophyInfo.trophyIconUrl ?? '',
+      type: trophyInfo.trophyType,
+      isHidden: trophyInfo.trophyHidden,
       isEarned: false,
-      earnedAt: undefined,
-      progress: undefined,
     };
 
     // Update earned info for trophy
-    for (const earned of accountTrophies) {
-      const e = earned[i];
-      assert(e.trophyId === t.trophyId, 'Trophy ID mismatch');
-      trophy.rarity = e.trophyEarnedRate;
+    for (const earnedTophies of accountTrophies) {
+      const earnedTrophy = earnedTophies[i];
+      assert(
+        earnedTrophy.trophyId === trophyInfo.trophyId,
+        'Trophy ID mismatch',
+      );
+      trophy.rarity = earnedTrophy.trophyEarnedRate;
 
-      if (!e.earned) continue;
-      trophy.isEarned = true;
-      trophy.earnedAt = earliestDate(trophy.earnedAt, e.earnedDateTime);
+      if (earnedTrophy.earned) {
+        trophy.isEarned = true;
+        trophy.earnedAt = earliestDate(
+          trophy.earnedAt,
+          earnedTrophy.earnedDateTime,
+        );
+      } else {
+        const progressTarget = Number(
+          trophyInfo.trophyProgressTargetValue ?? 0,
+        );
+        if (progressTarget > 1) {
+          trophy.progress = {
+            achieved: Number(earnedTrophy.progress ?? 0),
+            target: progressTarget,
+          };
+        }
+      }
     }
 
     if (trophy.isEarned) groups[groupIndex].earnedCount[trophy.type] += 1;
@@ -75,10 +87,10 @@ export async function getTrophyGroups(id: string, platform: string) {
   }
 
   // Update progress and trophies for group
-  for (const g of groups) {
-    const totalPoints = getTrophyPoints(g.trophyCount);
-    const earnedPoints = getTrophyPoints(g.earnedCount);
-    g.progress = Math.ceil((100 * earnedPoints) / totalPoints);
+  for (const group of groups) {
+    const totalPoints = getTrophyPoints(group.trophyCount);
+    const earnedPoints = getTrophyPoints(group.earnedCount);
+    group.progress = Math.ceil((100 * earnedPoints) / totalPoints);
   }
 
   return groups;

@@ -48,12 +48,14 @@ export type Trophy = {
   id: number;
   title: string;
   description: string;
-  isEarned: boolean;
-  isHidden: boolean;
   icon: string;
-  earnedAt: string | undefined;
   type: TrophyType;
-  /** % of players who have earned this trophy */
-  rarity: string | undefined;
-  progress: string | undefined;
+  isHidden: boolean;
+  rarity?: string;
+  isEarned: boolean;
+  earnedAt?: string;
+  progress?: {
+    achieved: number;
+    target: number;
+  };
 };

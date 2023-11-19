@@ -9,20 +9,22 @@ import { TrophyCount } from '../../src/playstation/types';
 import { cacheControl } from '../../src/util';
 
 export default async function (req: VercelRequest, res: VercelResponse) {
-  const primary = await getProfile('Sutne_');
-  const secondary = await getProfile('Sivvi__');
-
-  const combined = combineCounts(
+  const [primary, secondary] = await Promise.all([
+    getProfile('Sutne_'),
+    getProfile('Sivvi__'),
+  ]);
+  const combinedTrophyCount = combineCounts(
     primary.profile.trophySummary.earnedTrophies,
     secondary.profile.trophySummary.earnedTrophies,
   );
+  const accountLevel = getTrophyLevel(getTrophyPoints(combinedTrophyCount));
 
   const profile = {
     onlineId: primary.profile.onlineId,
     avatar: primary.profile.avatarUrls[0].avatarUrl,
     trophySummary: {
-      level: getTrophyLevel(getTrophyPoints(combined)),
-      earned: combined,
+      level: accountLevel,
+      earned: combinedTrophyCount,
     },
   };
 

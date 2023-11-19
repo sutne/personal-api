@@ -9,8 +9,10 @@ export async function getGames() {
 
   const id = (g: TrophyTitle) => g.npCommunicationId;
 
-  for (const account of ACCOUNTS) {
-    const accountGames = await getGameList(account);
+  const gamesForAccounts: TrophyTitle[][] = await Promise.all(
+    ACCOUNTS.map(async (account) => getGameList(account)),
+  );
+  for (const accountGames of gamesForAccounts) {
     for (const newTitle of accountGames) {
       // check if title exists in games already
       const oldTitle = games.find((g) => id(g) === id(newTitle));

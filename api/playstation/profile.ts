@@ -28,7 +28,7 @@ export default async function (req: VercelRequest, res: VercelResponse) {
 
   return res
     .status(200)
-    .setHeader('Cache-Control', cacheControl({ hours: 3 }))
+    .setHeader('Cache-Control', cacheControl({ hours: 1 }))
     .send(profile);
 }
 

@@ -25,6 +25,6 @@ export default async function (req: VercelRequest, res: VercelResponse) {
   tracks = tracks.filter((track) => track !== undefined);
   return res
     .status(200)
-    .setHeader('Cache-Control', cacheControl({ days: 1 }))
+    .setHeader('Cache-Control', cacheControl({ days: 7 }))
     .send(tracks);
 }

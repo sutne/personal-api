@@ -3,11 +3,10 @@ import {
   getGameTrophies,
   getTrophyGroupInfo,
 } from '../../middleware';
-import { UserThinTrophy } from 'psn-api';
 import { Trophy, TrophyGroup } from '../../types';
 import assert from 'assert';
 import { earliestDate } from '../../../util';
-import { getTrophyPoints } from '../trophy-calculation';
+import { getTrophyCountProgress } from '../trophy-calculation';
 import { ACCOUNTS } from '../../config';
 
 export async function getTrophyGroups(id: string, platform: string) {
@@ -88,9 +87,10 @@ export async function getTrophyGroups(id: string, platform: string) {
 
   // Update progress and trophies for group
   for (const group of groups) {
-    const totalPoints = getTrophyPoints(group.trophyCount);
-    const earnedPoints = getTrophyPoints(group.earnedCount);
-    group.progress = Math.ceil((100 * earnedPoints) / totalPoints);
+    group.progress = getTrophyCountProgress(
+      group.earnedCount,
+      group.trophyCount,
+    );
   }
 
   return groups;

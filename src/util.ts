@@ -1,5 +1,3 @@
-import fs from 'fs';
-
 export function formatURL(root: string, args?: Object) {
   if (!args) return root;
   const query = Object.entries(args)
@@ -32,12 +30,6 @@ export function convert(data: any, contentType?: string) {
     default:
       return data?.toString() ?? '';
   }
-}
-
-export function writeJSON(filename: string, data: any) {
-  const path = `${filename}.json`;
-  const dataString = JSON.stringify(data, null, 2);
-  fs.writeFile(path, dataString, (err: any) => console.error(err));
 }
 
 /**

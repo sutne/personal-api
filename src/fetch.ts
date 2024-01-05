@@ -1,11 +1,11 @@
 import { convert } from './util';
 
 type get_args = {
-  headers?: {};
+  headers?: any;
 };
 type post_args = {
-  headers?: {};
-  body?: {} | string;
+  headers?: any;
+  body?: any;
 };
 
 /**
@@ -60,6 +60,10 @@ async function MyFetch(url: string, args: {}): Promise<any> {
     // Return parsed response
     return data;
   } catch (err) {
-    console.error(`Fetch error: ${err.message}`, { url, args, error });
+    console.error(`Fetch error: ${(err as Error).message}`, {
+      url,
+      args,
+      error,
+    });
   }
 }

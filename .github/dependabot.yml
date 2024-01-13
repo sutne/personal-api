@@ -1,9 +1,11 @@
 version: 2
 updates:
-  - package-ecosystem: npm
-    directory: /
+  - package-ecosystem: "npm"
+    directory: "/"
     schedule:
-      interval: monthly
-      time: "15:00"
-    allow:
-      - dependency-name: '*'
+      interval: "monthly"
+    groups:
+      app:
+        update-types:
+          - "minor"
+          - "patch"

@@ -34,8 +34,8 @@ with open(".env", "r") as env_file:
         # i am not able to hence the loop below
         for env in ["production"]:
             # Remove the variable if it exists, suppress output
-            os.system(f"vercel env rm {key} {env} -y {suppress}")
+            os.system(f"npx vercel env rm {key} {env} -y {suppress}")
             # Add the variable with local value
-            os.system(f"echo {value} | vercel env add {key} {env}")
+            os.system(f"echo {value} | npx vercel env add {key} {env}")
 
 print("\nDone")

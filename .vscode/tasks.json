@@ -95,7 +95,7 @@
         "color": "terminal.ansiYellow"
       },
       "type": "shell",
-      "command": "vercel pull --environment=production",
+      "command": "npx vercel pull --environment=production",
       "presentation": {
         "panel": "dedicated",
         "reveal": "always",

@@ -61,7 +61,7 @@
         "color": "terminal.ansiRed"
       },
       "type": "shell",
-      "command": "rm -rf node_modules package-lock.json build",
+      "command": "rm -rf node_modules build",
       "presentation": {
         "panel": "dedicated",
         "reveal": "always",

@@ -31,7 +31,7 @@ export async function getGameTrophies(
   const response = await psn.getTitleTrophies(await getAuth(), gameId, 'all', {
     npServiceName: npServiceName,
   });
-  return response.trophies;
+  return response.trophies ?? [];
 }
 
 export async function getEarnedTrophies(
@@ -57,7 +57,7 @@ export async function getTrophyGroupInfo(gameId: string, platform: string) {
   const response = await psn.getTitleTrophyGroups(await getAuth(), gameId, {
     npServiceName: npServiceName,
   });
-  return response.trophyGroups;
+  return response.trophyGroups ?? [];
 }
 
 export async function getRecentlyPlayedGames() {

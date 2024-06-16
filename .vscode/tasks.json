@@ -10,7 +10,7 @@
       },
       "type": "shell",
       "dependsOn": "Clean",
-      "command": "npm install",
+      "command": "yarn install",
       "presentation": {
         "panel": "dedicated",
         "reveal": "always",
@@ -27,7 +27,7 @@
         "color": "terminal.ansiBlue"
       },
       "type": "shell",
-      "command": "npm start",
+      "command": "yarn start",
       "presentation": {
         "panel": "dedicated",
         "reveal": "always",
@@ -44,7 +44,7 @@
         "color": "terminal.ansiGreen"
       },
       "type": "shell",
-      "command": "npm run deploy",
+      "command": "yarn run deploy",
       "presentation": {
         "panel": "dedicated",
         "reveal": "always",

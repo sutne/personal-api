@@ -27,11 +27,10 @@ export async function getGameTrophies(
   gameId: string,
   platform: string,
 ): Promise<(psn.TitleThinTrophy & { trophyProgressTargetValue?: string })[]> {
-  const npServiceName = platform === 'PS5' ? undefined : 'trophy';
   const response = await psn.getTitleTrophies(await getAuth(), gameId, 'all', {
-    npServiceName: npServiceName,
+    npServiceName: getNpServiceName(platform),
   });
-  return response.trophies ?? [];
+  return response.trophies;
 }
 
 export async function getEarnedTrophies(
@@ -39,25 +38,23 @@ export async function getEarnedTrophies(
   platform: string,
   userId: string,
 ): Promise<(psn.UserThinTrophy & { progress?: string })[]> {
-  const npServiceName = platform === 'PS5' ? undefined : 'trophy';
   const response = await psn.getUserTrophiesEarnedForTitle(
     await getAuth(),
     userId,
     gameId,
     'all',
     {
-      npServiceName: npServiceName,
+      npServiceName: getNpServiceName(platform),
     },
   );
   return response.trophies;
 }
 
 export async function getTrophyGroupInfo(gameId: string, platform: string) {
-  const npServiceName = platform === 'PS5' ? undefined : 'trophy';
   const response = await psn.getTitleTrophyGroups(await getAuth(), gameId, {
-    npServiceName: npServiceName,
+    npServiceName: getNpServiceName(platform),
   });
-  return response.trophyGroups ?? [];
+  return response.trophyGroups;
 }
 
 export async function getRecentlyPlayedGames() {
@@ -66,4 +63,23 @@ export async function getRecentlyPlayedGames() {
     categories: ['ps4_game', 'ps5_native_game'],
   });
   return response.data.gameLibraryTitlesRetrieve.games;
+}
+
+type NpServiceName = undefined | 'trophy' | 'trophy2';
+function getNpServiceName(platform: string): NpServiceName {
+  switch (platform) {
+    case 'PS Vita':
+      return 'trophy';
+    case 'PS3':
+      return 'trophy';
+    case 'PS4':
+      return 'trophy';
+    case 'PS5':
+      return 'trophy2';
+    case 'PS5,PSPC':
+      return 'trophy2';
+    default:
+      console.error("unknown platform: '" + platform + "'");
+      return undefined;
+  }
 }

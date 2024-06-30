@@ -57,6 +57,16 @@ export function earliestDate(
   return compareDate(a, b) < 0 ? a : b;
 }
 
+/**
+ * @returns the latest of the two date strings.
+ */
+export function latestDate(
+  a: string | undefined,
+  b: string | undefined,
+): string | undefined {
+  return compareDate(a, b) > 0 ? a : b;
+}
+
 type Time = {
   days?: number;
   hours?: number;

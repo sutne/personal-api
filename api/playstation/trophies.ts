@@ -19,6 +19,7 @@ import { TrophyTitle } from 'psn-api';
 import { platform } from '../../src/playstation/util/platforms';
 import { assert } from 'console';
 import { getTrophyCountProgress } from '../../src/playstation/util/trophy-calculation';
+import { maxCounts } from '../../src/playstation/util/util';
 
 /**
  * @returns either trophy overview for a game, or all trophies associated with
@@ -89,12 +90,13 @@ async function getOverviewForAllGames(): Promise<TrophyGame[]> {
     return compareDate(a.lastUpdatedDateTime, b.lastUpdatedDateTime);
   });
   return sorted.map((game) => {
-    const platformInfo: PlatformInfo = {
-      id: game.npCommunicationId,
-      platform: platform(game.trophyTitlePlatform),
-    };
     const trophyGame: TrophyGame = {
-      platform: [platformInfo],
+      platform: [
+        {
+          id: game.npCommunicationId,
+          platform: platform(game.trophyTitlePlatform),
+        },
+      ],
       title: game.trophyTitleName,
       image: game.trophyTitleIconUrl,
       trophyCount: game.definedTrophies,
@@ -103,6 +105,35 @@ async function getOverviewForAllGames(): Promise<TrophyGame[]> {
       firstTrophyEarnedAt: game.firstUpdatedDateTime,
       lastTrophyEarnedAt: game.lastUpdatedDateTime,
     };
+    const gameWithSameTitle = sorted.filter(
+      (g) =>
+        g.trophyTitleName === game.trophyTitleName &&
+        g.npCommunicationId !== game.npCommunicationId,
+    );
+    for (const otherGame of gameWithSameTitle) {
+      trophyGame.platform.push({
+        id: otherGame.npCommunicationId,
+        platform: platform(otherGame.trophyTitlePlatform),
+      });
+      sorted.splice(sorted.indexOf(otherGame), 1);
+      trophyGame.firstTrophyEarnedAt = earliestDate(
+        trophyGame.firstTrophyEarnedAt,
+        otherGame.firstUpdatedDateTime,
+      );
+      trophyGame.lastTrophyEarnedAt = latestDate(
+        trophyGame.lastTrophyEarnedAt,
+        otherGame.lastUpdatedDateTime,
+      );
+      trophyGame.progress = Math.max(trophyGame.progress, otherGame.progress);
+      trophyGame.trophyCount = maxCounts(
+        trophyGame.trophyCount,
+        otherGame.definedTrophies,
+      );
+      trophyGame.earnedCount = maxCounts(
+        trophyGame.earnedCount,
+        otherGame.earnedTrophies,
+      );
+    }
     return trophyGame;
   });
 }

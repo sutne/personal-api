@@ -16,67 +16,74 @@ export default async function (req: VercelRequest, res: VercelResponse) {
 
   const reqSingleGame = req.query.game && req.query.platform;
   if (reqSingleGame) {
-    // TrophyGroup[]
-    // returns all trophies (TrophyGroups) for a single game
-    const id = req.query.game as string;
-    const platform = req.query.platform as Platform;
-    const groups = await getTrophyGroups(id, platform);
-    response = groups;
-  } else {
-    // TrophyGame[]
-    // returns all games with their trophy overview
-    const games = (await getGames()) as (TrophyTitle & {
-      firstUpdatedDateTime?: string;
-    })[];
-
-    // Find earliest trophy earned for each game
-    await Promise.all(
-      games.map(async (game) => {
-        const groups = await getTrophyGroups(
-          game.npCommunicationId,
-          platform(game.trophyTitlePlatform),
-        );
-        // gather all group trophies to single list
-        const trophies = groups.reduce(
-          (trophies, group) => trophies.concat(group.trophies),
-          [] as Trophy[],
-        );
-
-        const earliestTrophy = trophies.reduce((earliest, trophy) => {
-          if (!trophy.isEarned) return earliest;
-          if (!earliest) return trophy;
-          const newIsEarlier =
-            compareDate(earliest.earnedAt, trophy.earnedAt) < 0;
-          return newIsEarlier ? trophy : earliest;
-        }, null as Trophy | null);
-
-        if (earliestTrophy !== null) {
-          game.firstUpdatedDateTime = earliestTrophy.earnedAt ?? '';
-        }
-      }),
+    response = await getTrophiesForSingleGame(
+      req.query.game as string,
+      req.query.platform as Platform,
     );
-
-    const sorted = games.sort((a, b) => {
-      return compareDate(a.lastUpdatedDateTime, b.lastUpdatedDateTime);
-    });
-    response = sorted.map((game) => {
-      const trophyGame: TrophyGame = {
-        id: game.npCommunicationId,
-        title: game.trophyTitleName,
-        image: game.trophyTitleIconUrl,
-        platforms: [platform(game.trophyTitlePlatform)],
-        trophyCount: game.definedTrophies,
-        earnedCount: game.earnedTrophies,
-        progress: game.progress,
-        firstTrophyEarnedAt: game.firstUpdatedDateTime,
-        lastTrophyEarnedAt: game.lastUpdatedDateTime,
-      };
-      return trophyGame;
-    });
+  } else {
+    response = await getOverviewForAllGames();
   }
 
   return res
     .status(200)
     .setHeader('Cache-Control', cacheControl({ hours: 1 }))
     .send(response);
+}
+
+/** returns all trophies (in TrophyGroup[]) for a single game */
+async function getTrophiesForSingleGame(id: string, platform: Platform) {
+  const groups = await getTrophyGroups(id, platform);
+  return groups;
+}
+
+/** returns all games with their trophy overview as TrophyGame[] */
+async function getOverviewForAllGames() {
+  const games = (await getGames()) as (TrophyTitle & {
+    firstUpdatedDateTime?: string;
+  })[];
+
+  // Find earliest trophy earned for each game
+  await Promise.all(
+    games.map(async (game) => {
+      const groups = await getTrophyGroups(
+        game.npCommunicationId,
+        platform(game.trophyTitlePlatform),
+      );
+      // gather all group trophies to single list
+      const trophies = groups.reduce(
+        (trophies, group) => trophies.concat(group.trophies),
+        [] as Trophy[],
+      );
+
+      const earliestTrophy = trophies.reduce((earliest, trophy) => {
+        if (!trophy.isEarned) return earliest;
+        if (!earliest) return trophy;
+        const newIsEarlier =
+          compareDate(earliest.earnedAt, trophy.earnedAt) < 0;
+        return newIsEarlier ? trophy : earliest;
+      }, null as Trophy | null);
+
+      if (earliestTrophy !== null) {
+        game.firstUpdatedDateTime = earliestTrophy.earnedAt ?? '';
+      }
+    }),
+  );
+
+  const sorted = games.sort((a, b) => {
+    return compareDate(a.lastUpdatedDateTime, b.lastUpdatedDateTime);
+  });
+  return sorted.map((game) => {
+    const trophyGame: TrophyGame = {
+      id: game.npCommunicationId,
+      title: game.trophyTitleName,
+      image: game.trophyTitleIconUrl,
+      platforms: [platform(game.trophyTitlePlatform)],
+      trophyCount: game.definedTrophies,
+      earnedCount: game.earnedTrophies,
+      progress: game.progress,
+      firstTrophyEarnedAt: game.firstUpdatedDateTime,
+      lastTrophyEarnedAt: game.lastUpdatedDateTime,
+    };
+    return trophyGame;
+  });
 }

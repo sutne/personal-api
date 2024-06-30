@@ -3,6 +3,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { getRecentlyPlayedGames } from '../../src/playstation/middleware';
 import { RecentGame } from '../../src/playstation/types';
 import { cacheControl } from '../../src/util';
+import { platform } from '../../src/playstation/util/platforms';
 
 export default async function (req: VercelRequest, res: VercelResponse) {
   const games = await getRecentlyPlayedGames();
@@ -10,7 +11,7 @@ export default async function (req: VercelRequest, res: VercelResponse) {
   const filtered: RecentGame[] = games.map((game) => {
     return {
       title: game.name,
-      platform: game.platform,
+      platform: platform(game.platform),
       image: game.image.url,
       lastPlayedAt: game.lastPlayedDateTime,
     };

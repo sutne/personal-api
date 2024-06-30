@@ -3,15 +3,17 @@ import {
   getGameTrophies,
   getTrophyGroupInfo,
 } from '../../middleware';
-import { Trophy, TrophyGroup } from '../../types';
+import { Platform, Trophy, TrophyGroup } from '../../types';
 import assert from 'assert';
 import { earliestDate } from '../../../util';
 import { getTrophyCountProgress } from '../trophy-calculation';
 import { ACCOUNTS } from '../../config';
 
-export async function getTrophyGroups(id: string, platform: string) {
-  const trophiesInfo = await getGameTrophies(id, platform);
-  const groupInfo = await getTrophyGroupInfo(id, platform);
+export async function getTrophyGroups(id: string, platform: Platform) {
+  const [trophiesInfo, groupInfo] = await Promise.all([
+    getGameTrophies(id, platform),
+    getTrophyGroupInfo(id, platform),
+  ]);
 
   const groups: TrophyGroup[] = [];
   for (const group of groupInfo) {

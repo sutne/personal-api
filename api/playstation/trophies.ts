@@ -2,9 +2,10 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 import { getGames } from '../../src/playstation/util/api/game-list';
 import { getTrophyGroups } from '../../src/playstation/util/api/trophy-list';
-import { Trophy, TrophyGame } from '../../src/playstation/types';
+import { Platform, Trophy, TrophyGame } from '../../src/playstation/types';
 import { cacheControl, compareDate } from '../../src/util';
 import { TrophyTitle } from 'psn-api';
+import { platform } from '../../src/playstation/util/platforms';
 
 /**
  * @returns either trophy overview for a game, or all trophies associated with
@@ -18,7 +19,7 @@ export default async function (req: VercelRequest, res: VercelResponse) {
     // TrophyGroup[]
     // returns all trophies (TrophyGroups) for a single game
     const id = req.query.game as string;
-    const platform = req.query.platform as string;
+    const platform = req.query.platform as Platform;
     const groups = await getTrophyGroups(id, platform);
     response = groups;
   } else {
@@ -33,9 +34,9 @@ export default async function (req: VercelRequest, res: VercelResponse) {
       games.map(async (game) => {
         const groups = await getTrophyGroups(
           game.npCommunicationId,
-          game.trophyTitlePlatform,
+          platform(game.trophyTitlePlatform),
         );
-        // gather all group trophies ot single list
+        // gather all group trophies to single list
         const trophies = groups.reduce(
           (trophies, group) => trophies.concat(group.trophies),
           [] as Trophy[],
@@ -63,7 +64,7 @@ export default async function (req: VercelRequest, res: VercelResponse) {
         id: game.npCommunicationId,
         title: game.trophyTitleName,
         image: game.trophyTitleIconUrl,
-        platform: game.trophyTitlePlatform,
+        platforms: [platform(game.trophyTitlePlatform)],
         trophyCount: game.definedTrophies,
         earnedCount: game.earnedTrophies,
         progress: game.progress,

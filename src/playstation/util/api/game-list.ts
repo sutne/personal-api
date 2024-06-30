@@ -3,6 +3,7 @@ import { TrophyTitle } from 'psn-api';
 import { getGameList } from '../../middleware';
 import { ACCOUNTS } from '../../config';
 import { getTrophyPoints } from '../trophy-calculation';
+import { Platform } from '../../types';
 
 export async function getGames() {
   const games: TrophyTitle[] = [];

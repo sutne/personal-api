@@ -26,11 +26,14 @@ export type RecentGame = {
   lastPlayedAt: string;
 };
 
-export type TrophyGame = {
+export type PlatformInfo = {
   id: string;
+  platform: Platform;
+};
+export type TrophyGame = {
+  platform: PlatformInfo[];
   title: string;
   image: string;
-  platforms: Platform[];
   trophyCount: TrophyCount;
   earnedCount: TrophyCount;
   progress: number;
@@ -39,6 +42,7 @@ export type TrophyGame = {
 };
 
 export type TrophyGroup = {
+  id: number;
   name: string;
   icon: string;
   trophyCount: TrophyCount;

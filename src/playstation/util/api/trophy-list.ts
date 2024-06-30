@@ -19,6 +19,7 @@ export async function getTrophyGroups(id: string, platform: Platform) {
   for (const group of groupInfo) {
     // Initialize Group
     groups.push({
+      id: getGroupIndex(group.trophyGroupId),
       name: group.trophyGroupName,
       icon: group.trophyGroupIconUrl,
       trophyCount: group.definedTrophies,

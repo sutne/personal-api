@@ -1,70 +1,98 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>sutne - Personal API</title>
+  </head>
+  <style>
+    body {
+      background-color: #e6e6e6;
+      color: rgba(0, 0, 0, 0.8);
+      font-family: sans-serif;
+      text-align: center;
+      font-size: 1.5em;
+      margin: 0 auto;
+      width: min(90%, 1200px);
+    }
 
-<head>
-  <title>sutne - Personal API</title>
-</head>
-<style>
-  body {
-    background-color: #e6e6e6;
-    color: rgba(0, 0, 0, 0.8);
-    font-family: sans-serif;
-    text-align: center;
-    font-size: 1.5em;
-    margin: 0 auto;
-    width: min(100%, 900px);
-  }
+    .content {
+      text-align: left;
+    }
 
-  .content {
-    text-align: left;
-  }
+    h1 {
+      font-size: 2rem;
+    }
 
-  h1 {
-    font-size: 2rem;
-  }
+    a {
+      color: #3684b5;
+      text-decoration: none;
+      cursor: pointer;
+    }
 
-  a {
-    color: #3684b5;
-    text-decoration: none;
-    cursor: pointer;
-  }
+    a:hover {
+      text-decoration: underline;
+    }
 
-  a:hover {
-    text-decoration: underline;
-  }
+    p {
+      padding: 0;
+      margin: 0;
+    }
 
-  p {
-    padding: 0;
-    margin: 0;
-  }
+    ul {
+      padding: 0;
+      margin: 0;
+    }
+  </style>
 
-  ul {
-    padding: 0;
-    margin: 0;
-  }
-</style>
-
-<body>
-  <h1>Endpoints</h1>
-  <div class="content">
-    <h4>Spotify</h4>
-    <p>Now Paying: <a href="/api/spotify/now-playing">/api/spotify/now-playing</a></p>
-    <p>Recently Played: <a href="/api/spotify/recently-played">/api/spotify/recently-played</a></p>
-    <p>Top Tracks: <a href="/api/spotify/top-tracks">/api/spotify/top-tracks</a></p>
-    <p>Top Artists: <a href="/api/spotify/top-artists">/api/spotify/top-artists</a></p>
-    <h4>Github</h4>
-    <p>Repos: <a href="/api/github/repos">/api/github/repos</a></p>
-    <p>Languages: <a href="/api/github/languages">/api/github/languages</a></p>
-    <h4>Playstation</h4>
-    <p>Profile: <a href="/api/playstation/profile">/api/playstation/profile</a></p>
-    <p>Recently Played: <a href="/api/playstation/recently-played">/api/playstation/recently-played</a></p>
-    <p>Trophies: <a href="/api/playstation/trophies">/api/playstation/trophies</a></p>
-    <p>Trophies For Game: <a
-        href="/api/playstation/trophies?game=NPWR06221_00&platform=PS4">/api/playstation/trophies?game={gameId}&platform={platform}</a>
-    </p>
-    <h4>Logs</h4>
-    <p><a href="/_logs">/_logs</a></p>
-  </div>
-</body>
-
+  <body>
+    <h1>Endpoints</h1>
+    <div class="content">
+      <h4>Spotify</h4>
+      <p>
+        Now Paying:
+        <a href="/api/spotify/now-playing">/api/spotify/now-playing</a>
+      </p>
+      <p>
+        Recently Played:
+        <a href="/api/spotify/recently-played">/api/spotify/recently-played</a>
+      </p>
+      <p>
+        Top Tracks:
+        <a href="/api/spotify/top-tracks">/api/spotify/top-tracks</a>
+      </p>
+      <p>
+        Top Artists:
+        <a href="/api/spotify/top-artists">/api/spotify/top-artists</a>
+      </p>
+      <h4>Github</h4>
+      <p>Repos: <a href="/api/github/repos">/api/github/repos</a></p>
+      <p>
+        Languages: <a href="/api/github/languages">/api/github/languages</a>
+      </p>
+      <h4>Playstation</h4>
+      <p>
+        Profile: <a href="/api/playstation/profile">/api/playstation/profile</a>
+      </p>
+      <p>
+        Recently Played:
+        <a href="/api/playstation/recently-played"
+          >/api/playstation/recently-played</a
+        >
+      </p>
+      <p>
+        Trophies:
+        <a href="/api/playstation/trophies">/api/playstation/trophies</a>
+      </p>
+      <p>Trophies for "Grand Theft Auto V" on PS4:</p>
+      <a href="/api/playstation/trophies?ids=NPWR06221_00&platforms=PS4"
+        >/api/playstation/trophies?ids=NPWR06221_00&platforms=PS4</a
+      >
+      <p>Trophies for "Fall Guys" on PS4+PS5:</p>
+      <a
+        href="/api/playstation/trophies?ids=NPWR25297_00&platforms=PS5&ids=NPWR19418_00&platforms=PS4"
+        >/api/playstation/trophies?ids=NPWR25297_00&platforms=PS5&ids=NPWR19418_00&platforms=PS4</a
+      >
+      <h4>Logs</h4>
+      <p><a href="/_logs">/_logs</a></p>
+    </div>
+  </body>
 </html>

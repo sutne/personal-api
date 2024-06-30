@@ -11,12 +11,12 @@ import { getOverviewForAllGames } from '../../src/playstation/get-overview-for-a
  */
 export default async function (req: VercelRequest, res: VercelResponse) {
   const ids = (
-    typeof req.query.ids === 'string' ? [req.query.ids] : req.query.ids
+    typeof req.query.id === 'string' ? [req.query.id] : req.query.id
   ) as string[];
   const platforms = (
-    typeof req.query.platforms === 'string'
-      ? [req.query.platforms]
-      : req.query.platforms
+    typeof req.query.platform === 'string'
+      ? [req.query.platform]
+      : req.query.platform
   ) as Platform[];
 
   if (!ids && !platforms) {

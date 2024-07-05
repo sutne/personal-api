@@ -4,8 +4,7 @@ import {
   getTrophyGroupInfo,
 } from '../../middleware';
 import { Platform, Trophy, TrophyGroup } from '../../types';
-import assert from 'assert';
-import { earliestDate } from '../../../util';
+import { earliestDate, json } from '../../../util';
 import { getTrophyCountProgress } from '../trophy-calculation';
 import { ACCOUNTS } from '../../config';
 
@@ -58,18 +57,25 @@ export async function getTrophyGroups(id: string, platform: Platform) {
     // Update earned info for trophy
     for (const earnedTophies of accountTrophies) {
       const earnedTrophy = earnedTophies[i];
-      assert(
-        earnedTrophy.trophyId === trophyInfo.trophyId,
-        'Trophy ID mismatch',
-      );
+      if (earnedTrophy.trophyId !== trophyInfo.trophyId) {
+        throw new Error(
+          `Trophy id mismatch: "${json(earnedTrophy)}" vs "${json(
+            trophyInfo,
+          )}"`,
+        );
+      }
       trophy.rarity = earnedTrophy.trophyEarnedRate;
 
       if (earnedTrophy.earned) {
         trophy.isEarned = true;
-        trophy.earnedAt = earliestDate(
-          trophy.earnedAt,
-          earnedTrophy.earnedDateTime,
-        );
+        if (trophy.earnedAt) {
+          trophy.earnedAt = earliestDate(
+            trophy.earnedAt,
+            earnedTrophy.earnedDateTime,
+          );
+        } else {
+          trophy.earnedAt = earnedTrophy.earnedDateTime;
+        }
       } else {
         const progressTarget = Number(
           trophyInfo.trophyProgressTargetValue ?? 0,

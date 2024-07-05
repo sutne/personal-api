@@ -1,7 +1,6 @@
 import { getTrophyGroups } from '../../src/playstation/util/api/trophy-list';
 import { PlatformInfo, TrophyGroup } from '../../src/playstation/types';
-import { compareDate } from '../../src/util';
-import { assert } from 'console';
+import { earliestDate } from '../../src/util';
 import { getTrophyCountProgress } from '../../src/playstation/util/trophy-calculation';
 
 /** returns all trophies (in TrophyGroup[]) for a single game */
@@ -10,60 +9,66 @@ export async function getTrophiesForSingleTitle(
 ): Promise<TrophyGroup[]> {
   const groupsPerPlatform = await Promise.all(
     platformInfo
-      .sort((a, b) => b.platform.localeCompare(a.platform)) // Highest number first
+      .sort((a, b) => a.platform.localeCompare(b.platform)) // Highest number first
       .map((game) => getTrophyGroups(game.id, game.platform)),
   );
-  const combinedGroups: TrophyGroup[] = groupsPerPlatform[0];
+  let combinedGroups: TrophyGroup[] = groupsPerPlatform[0];
   for (let i = 1; i < groupsPerPlatform.length; i++) {
-    const groups = groupsPerPlatform[i];
-    for (const group of groups) {
-      const existingGroup = combinedGroups.find((g) => g.id === group.id);
-      if (!existingGroup) {
-        combinedGroups.push(group);
-        continue;
-      }
-      assert(
-        existingGroup.name.trim() === group.name.trim(),
-        `Group name mismatch: "${existingGroup.name}" vs "${group.name}"`,
-      );
-      for (const trophy of group.trophies) {
-        const existingTrophy = existingGroup.trophies.find(
-          (t) => t.id === trophy.id,
-        );
-        if (!existingTrophy) {
-          existingGroup.trophies.push(trophy);
-          existingGroup.trophyCount[trophy.type]++;
-          if (trophy.isEarned) {
-            existingGroup.earnedCount[trophy.type]++;
-          }
-          continue;
-        }
-        if (!trophy.isEarned) continue;
-        assert(
-          existingTrophy.type === trophy.type,
-          `Trophy type mismatch: "${existingTrophy.type}" vs "${trophy.type}"`,
-        );
-        assert(
-          existingTrophy.title.trim() === trophy.title.trim(),
-          `Trophy title mismatch: "${existingTrophy.title}" vs "${trophy.title}"`,
-        );
-        if (!existingTrophy.isEarned) {
-          existingTrophy.isEarned = true;
-          existingTrophy.earnedAt = trophy.earnedAt;
-          existingTrophy.progress = trophy.progress;
-          existingGroup.earnedCount[trophy.type]++;
-          continue;
-        } else {
-          if (compareDate(existingTrophy.earnedAt, trophy.earnedAt) < 0) {
-            existingTrophy.earnedAt = trophy.earnedAt;
-          }
-        }
-      }
-      existingGroup.progress = getTrophyCountProgress(
-        existingGroup.earnedCount,
-        existingGroup.trophyCount,
-      );
-    }
+    combinedGroups = combineGroups(combinedGroups, groupsPerPlatform[i]);
   }
   return combinedGroups;
+}
+
+export function combineGroups(
+  a: TrophyGroup[],
+  b: TrophyGroup[],
+): TrophyGroup[] {
+  const combined: TrophyGroup[] = JSON.parse(JSON.stringify(a));
+  for (const group of b) {
+    const existingGroup = combined.find(
+      (g) => g.name.trim() === group.name.trim(),
+    );
+    if (!existingGroup) {
+      combined.push(group);
+      continue;
+    }
+    for (const trophy of group.trophies) {
+      const existingTrophy = existingGroup.trophies.find(
+        (t) => t.title.trim() === trophy.title.trim(),
+      );
+      if (!existingTrophy) {
+        existingGroup.trophies.push(trophy);
+        existingGroup.trophyCount[trophy.type]++;
+        if (trophy.isEarned) {
+          existingGroup.earnedCount[trophy.type]++;
+        }
+        continue;
+      }
+      if (!trophy.isEarned) {
+        if (!existingTrophy.progress) continue;
+        existingTrophy.progress.achieved = Math.max(
+          existingTrophy.progress.achieved,
+          trophy.progress?.achieved || 0,
+        );
+        continue;
+      }
+      if (!existingTrophy.isEarned) {
+        existingTrophy.isEarned = true;
+        existingTrophy.earnedAt = trophy.earnedAt;
+        existingTrophy.progress = trophy.progress;
+        existingGroup.earnedCount[trophy.type]++;
+        continue;
+      } else {
+        existingTrophy.earnedAt = earliestDate(
+          existingTrophy.earnedAt,
+          trophy.earnedAt,
+        );
+      }
+    }
+    existingGroup.progress = getTrophyCountProgress(
+      existingGroup.earnedCount,
+      existingGroup.trophyCount,
+    );
+  }
+  return combined;
 }

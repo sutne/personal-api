@@ -33,7 +33,7 @@ export function convert(data: any, contentType?: string) {
 }
 
 /**
- * @returns positive if a is a before b, negative if b is before a
+ * @returns positive if a is a before b, negative if b is before a.
  */
 export function compareDate(
   a: string | undefined,
@@ -54,7 +54,8 @@ export function earliestDate(
   a: string | undefined,
   b: string | undefined,
 ): string | undefined {
-  return compareDate(a, b) < 0 ? a : b;
+  const aIsEarliest = 0 < compareDate(a, b);
+  return aIsEarliest ? a : b;
 }
 
 /**
@@ -64,7 +65,8 @@ export function latestDate(
   a: string | undefined,
   b: string | undefined,
 ): string | undefined {
-  return compareDate(a, b) > 0 ? a : b;
+  const aIsEarliest = 0 < compareDate(a, b);
+  return aIsEarliest ? b : a;
 }
 
 type Time = {
@@ -84,4 +86,8 @@ export function cacheControl({ days, hours, minutes, seconds }: Time): string {
     (minutes ?? 0) * 60 +
     (seconds ?? 0);
   return `max-age=0, public, s-maxage=${totalSeconds}`;
+}
+
+export function json(object: any): string {
+  return JSON.stringify(object, null, 2);
 }

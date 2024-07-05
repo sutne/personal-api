@@ -40,38 +40,37 @@ export async function getOverviewForAllGames(): Promise<TrophyGame[]> {
     }),
   );
 
-  const uniqueGames: TrophyGame[] = [];
+  const uniqueGameTitles: TrophyGameTitle[] = [];
   trophyGameTitles.forEach((gameTitle) => {
-    const existingGame = uniqueGames.find(
-      (g) => g.title.trim() === gameTitle.game.title.trim(),
+    const existingGameTitle = uniqueGameTitles.find(
+      (gt) => gt.game.title.trim() === gameTitle.game.title.trim(),
     );
-    const game = gameTitle.game;
-    if (!existingGame) {
-      uniqueGames.push(game);
+    if (!existingGameTitle) {
+      uniqueGameTitles.push(gameTitle);
       return;
     }
 
     const gamesWithSameTitle = trophyGameTitles.filter(
       (t) =>
-        t.game.title === existingGame.title &&
-        t.game.platform[0].id !== existingGame.platform[0].id,
+        t.game.title === existingGameTitle.game.title &&
+        t.game.platform[0].id !== existingGameTitle.game.platform[0].id,
     );
     for (const otherGameTitle of gamesWithSameTitle) {
       const otherGame = otherGameTitle.game;
-      existingGame.platform.push({ ...otherGame.platform[0] });
-      existingGame.firstTrophyEarnedAt = earliestDate(
-        existingGame.firstTrophyEarnedAt,
+      existingGameTitle.game.platform.push({ ...otherGame.platform[0] });
+      existingGameTitle.game.firstTrophyEarnedAt = earliestDate(
+        existingGameTitle.game.firstTrophyEarnedAt,
         otherGame.firstTrophyEarnedAt,
       );
-      existingGame.lastTrophyEarnedAt = latestDate(
-        existingGame.lastTrophyEarnedAt,
+      existingGameTitle.game.lastTrophyEarnedAt = latestDate(
+        existingGameTitle.game.lastTrophyEarnedAt,
         otherGame.lastTrophyEarnedAt,
       );
       const combinedGroups = combineGroups(
-        gameTitle.groups,
+        existingGameTitle.groups,
         otherGameTitle.groups,
       );
-      existingGame.trophyCount = combinedGroups.reduce(
+      existingGameTitle.game.trophyCount = combinedGroups.reduce(
         (count, group) => {
           return {
             bronze: count.bronze + group.trophyCount.bronze,
@@ -82,7 +81,7 @@ export async function getOverviewForAllGames(): Promise<TrophyGame[]> {
         },
         { bronze: 0, silver: 0, gold: 0, platinum: 0 },
       );
-      existingGame.earnedCount = combinedGroups.reduce(
+      existingGameTitle.game.earnedCount = combinedGroups.reduce(
         (earned, group) => {
           return {
             bronze: earned.bronze + group.earnedCount.bronze,
@@ -93,20 +92,17 @@ export async function getOverviewForAllGames(): Promise<TrophyGame[]> {
         },
         { bronze: 0, silver: 0, gold: 0, platinum: 0 },
       );
-      existingGame.progress = getTrophyCountProgress(
-        existingGame.earnedCount,
-        existingGame.trophyCount,
+      existingGameTitle.game.progress = getTrophyCountProgress(
+        existingGameTitle.game.earnedCount,
+        existingGameTitle.game.trophyCount,
       );
-    }
-    if (existingGame.title === 'Fall Guys') {
-      console.log(existingGame);
     }
   });
 
-  uniqueGames.sort((a, b) => {
-    return compareDate(a.lastTrophyEarnedAt, b.lastTrophyEarnedAt);
+  uniqueGameTitles.sort((a, b) => {
+    return compareDate(a.game.lastTrophyEarnedAt, b.game.lastTrophyEarnedAt);
   });
-  return uniqueGames;
+  return uniqueGameTitles.map((gameTitle) => gameTitle.game);
 }
 
 function getEarliestTrophyEarnedDate(

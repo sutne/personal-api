@@ -32,7 +32,7 @@ with open(".env", "r") as env_file:
 
         # Docs say you can add/remove to multiple environments at once, but
         # i am not able to hence the loop below
-        for env in ["production"]:
+        for env in ["production", "preview", "development"]:
             # Remove the variable if it exists, suppress output
             os.system(f"npx vercel env rm {key} {env} -y {suppress}")
             # Add the variable with local value

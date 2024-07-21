@@ -104,6 +104,40 @@
         "clear": true,
         "echo": true
       }
+    },
+    {
+      "label": "Run 'get_playtsation-refresh-token.ts'",
+      "icon": {
+        "id": "git-fetch",
+        "color": "terminal.ansiYellow"
+      },
+      "type": "shell",
+      "command": "npx ts-node scripts/get_playtsation-refresh-token.ts",
+      "presentation": {
+        "panel": "dedicated",
+        "reveal": "always",
+        "showReuseMessage": false,
+        "focus": false,
+        "clear": true,
+        "echo": true
+      }
+    },
+    {
+      "label": "Upload 'PLAYSTATION_REFRESH_TOKEN'",
+      "icon": {
+        "id": "sync",
+        "color": "terminal.ansiYellow"
+      },
+      "type": "shell",
+      "command": "python3 scripts/sync-env.py PLAYSTATION_REFRESH_TOKEN",
+      "presentation": {
+        "panel": "dedicated",
+        "reveal": "always",
+        "showReuseMessage": false,
+        "focus": false,
+        "clear": true,
+        "echo": true
+      }
     }
   ]
 }

@@ -1,10 +1,7 @@
 import os
+import sys
 
-
-# WARNING
-# looks like using this script is NOT a good idea as some values
-# have \n appended to them, making them invalid
-
+keys = sys.argv[1:]
 
 # hides output from vercel cli when appended to command
 suppress = ">/dev/null 2>&1"
@@ -29,6 +26,9 @@ with open(".env", "r") as env_file:
             continue
 
         key, value = variable
+
+        if keys and key not in keys:
+            continue
 
         # Docs say you can add/remove to multiple environments at once, but
         # i am not able to hence the loop below

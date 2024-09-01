@@ -8,6 +8,6 @@
     "@vercel/node": "^3.0.15",
     "psn-api": "^2.10.1",
     "typescript": "^5.3.3",
-    "vercel": "^35.2.4"
+    "vercel": "^37.2.1"
   }
 }

@@ -27,7 +27,7 @@
         "color": "terminal.ansiBlue"
       },
       "type": "shell",
-      "command": "yarn start",
+      "command": "yarn install && yarn start",
       "presentation": {
         "panel": "dedicated",
         "reveal": "always",
@@ -112,7 +112,7 @@
         "color": "terminal.ansiYellow"
       },
       "type": "shell",
-      "command": "npx ts-node scripts/get_playtsation-refresh-token.ts",
+      "command": "npx ts-node scripts/get_playstation_refresh_token.ts",
       "presentation": {
         "panel": "dedicated",
         "reveal": "always",

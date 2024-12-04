@@ -1,6 +1,6 @@
-.vercel
-.DS_Store
-node_modules
 .env
-yarn.lock
-temp*
+.DS_Store
+.vscode/*
+!.vscode/tasks.json
+node_modules
+.vercel

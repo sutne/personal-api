@@ -9,8 +9,7 @@
         "color": "terminal.ansiYellow"
       },
       "type": "shell",
-      "dependsOn": "Clean",
-      "command": "yarn install",
+      "command": "rm -rf node_modules && npm install",
       "presentation": {
         "panel": "dedicated",
         "reveal": "always",
@@ -27,41 +26,7 @@
         "color": "terminal.ansiBlue"
       },
       "type": "shell",
-      "command": "yarn install && yarn start",
-      "presentation": {
-        "panel": "dedicated",
-        "reveal": "always",
-        "showReuseMessage": false,
-        "focus": false,
-        "clear": true,
-        "echo": true
-      }
-    },
-    {
-      "label": "Deploy",
-      "icon": {
-        "id": "cloud-upload",
-        "color": "terminal.ansiGreen"
-      },
-      "type": "shell",
-      "command": "yarn run deploy",
-      "presentation": {
-        "panel": "dedicated",
-        "reveal": "always",
-        "showReuseMessage": false,
-        "focus": false,
-        "clear": true,
-        "echo": true
-      }
-    },
-    {
-      "label": "Clean",
-      "icon": {
-        "id": "trash",
-        "color": "terminal.ansiRed"
-      },
-      "type": "shell",
-      "command": "rm -rf node_modules build",
+      "command": "npm start",
       "presentation": {
         "panel": "dedicated",
         "reveal": "always",

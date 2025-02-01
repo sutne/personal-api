@@ -4,10 +4,10 @@
     "deploy": "vercel deploy --prod"
   },
   "devDependencies": {
-    "@types/node": "^22.10.3",
-    "@vercel/node": "^5.0.0",
-    "psn-api": "^2.10.1",
-    "typescript": "^5.7.2",
-    "vercel": "^39.2.2"
+    "@types/node": "^22.13.1",
+    "@vercel/node": "^5.1.2",
+    "psn-api": "^2.11.0",
+    "typescript": "^5.7.3",
+    "vercel": "^41.0.2"
   }
 }

@@ -14,7 +14,7 @@ export async function fetch(url: string): Promise<any> {
 }
 
 export async function getToken(): Promise<string> {
-  const response = await POST(REFRESH_TOKEN_URL, {
+  const response = await POST<any>(REFRESH_TOKEN_URL, {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
       Authorization: `Basic ${BASE64}`,

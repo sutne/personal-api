@@ -23,9 +23,9 @@ export async function GET(url: string, args: get_args = {}) {
  * @param url Root URL
  * @param args `{ headers: {}, body: {} }`
  */
-export async function POST(url: string, args: post_args = {}): Promise<any> {
+export async function POST<T>(url: string, args: post_args = {}): Promise<T> {
   // Convert body to correct format
-  let content = convert(args.body, args.headers?.['Content-Type']);
+  const content = convert(args.body, args.headers?.['Content-Type']);
 
   // Perform post request
   return await MyFetch(url, {
@@ -41,7 +41,7 @@ export async function POST(url: string, args: post_args = {}): Promise<any> {
  * everywhere.
  *
  */
-async function MyFetch(url: string, args: {}): Promise<any> {
+async function MyFetch<T>(url: string, args: object): Promise<T> {
   let error = {};
   try {
     // Perform fetch request

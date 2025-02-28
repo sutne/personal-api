@@ -1,9 +1,9 @@
+import type { TrophyTitle } from 'psn-api';
+import type { Trophy, TrophyGame, TrophyGroup } from '../../src/playstation/types';
 import { getGames } from '../../src/playstation/util/api/game-list';
 import { getTrophyGroups } from '../../src/playstation/util/api/trophy-list';
-import { Trophy, TrophyGame, TrophyGroup } from '../../src/playstation/types';
-import { compareDate, earliestDate, latestDate } from '../../src/util';
-import { TrophyTitle } from 'psn-api';
 import { platform } from '../../src/playstation/util/platforms';
+import { compareDate, earliestDate, latestDate } from '../../src/util';
 import { combineGroups } from './get-trophies-for-single-title';
 import { getTrophyCountProgress } from './util/trophy-calculation';
 
@@ -41,13 +41,13 @@ export async function getOverviewForAllGames(): Promise<TrophyGame[]> {
   );
 
   const uniqueGameTitles: TrophyGameTitle[] = [];
-  trophyGameTitles.forEach((gameTitle) => {
+  for (const gameTitle of trophyGameTitles) {
     const existingGameTitle = uniqueGameTitles.find(
       (gt) => gt.game.title.trim() === gameTitle.game.title.trim(),
     );
     if (!existingGameTitle) {
       uniqueGameTitles.push(gameTitle);
-      return;
+      continue;
     }
 
     const gamesWithSameTitle = trophyGameTitles.filter(
@@ -97,7 +97,7 @@ export async function getOverviewForAllGames(): Promise<TrophyGame[]> {
         existingGameTitle.game.trophyCount,
       );
     }
-  });
+  }
 
   uniqueGameTitles.sort((a, b) => {
     return compareDate(a.game.lastTrophyEarnedAt, b.game.lastTrophyEarnedAt);
@@ -105,16 +105,17 @@ export async function getOverviewForAllGames(): Promise<TrophyGame[]> {
   return uniqueGameTitles.map((gameTitle) => gameTitle.game);
 }
 
-function getEarliestTrophyEarnedDate(
-  groups: TrophyGroup[],
-): string | undefined {
+function getEarliestTrophyEarnedDate(groups: TrophyGroup[]): string | undefined {
   const trophies = groups.reduce(
     (trophies, group) => trophies.concat(group.trophies),
     [] as Trophy[],
   );
-  return trophies.reduce((firstDate, trophy) => {
-    if (!trophy.isEarned) return firstDate;
-    if (!firstDate) return trophy.earnedAt;
-    return earliestDate(firstDate, trophy.earnedAt);
-  }, undefined as string | undefined);
+  return trophies.reduce(
+    (firstDate, trophy) => {
+      if (!trophy.isEarned) return firstDate;
+      if (!firstDate) return trophy.earnedAt;
+      return earliestDate(firstDate, trophy.earnedAt);
+    },
+    undefined as string | undefined,
+  );
 }

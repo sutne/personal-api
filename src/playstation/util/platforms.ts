@@ -1,4 +1,4 @@
-import { Platform } from '../types';
+import type { Platform } from '../types';
 
 export function platform(trophyTitlePlatform: string): Platform {
   switch (trophyTitlePlatform) {
@@ -12,7 +12,7 @@ export function platform(trophyTitlePlatform: string): Platform {
     case 'PS5,PSPC':
       return 'PS5';
   }
-  throw new Error('Unknown platform: ' + trophyTitlePlatform);
+  throw new Error(`Unknown platform: ${trophyTitlePlatform}`);
 }
 
 type NpServiceName = undefined | 'trophy' | 'trophy2';

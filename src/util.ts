@@ -1,4 +1,4 @@
-export function formatURL(root: string, args?: Object) {
+export function formatURL(root: string, args?: object) {
   if (!args) return root;
   const query = Object.entries(args)
     .map(([key, value]) => {
@@ -35,10 +35,7 @@ export function convert(data: any, contentType?: string) {
 /**
  * @returns positive if a is a before b, negative if b is before a.
  */
-export function compareDate(
-  a: string | undefined,
-  b: string | undefined,
-): number {
+export function compareDate(a: string | undefined, b: string | undefined): number {
   if (!a && !b) return 0;
   if (!a) return 1;
   if (!b) return -1;

@@ -1,4 +1,4 @@
-import { TrophyCount } from '../types';
+import type { TrophyCount } from '../types';
 
 const TrophyPoints = {
   bronze: 15,

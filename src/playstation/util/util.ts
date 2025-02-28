@@ -1,4 +1,4 @@
-import { TrophyCount } from '../types';
+import type { TrophyCount } from '../types';
 
 export function maxCounts(a: TrophyCount, b: TrophyCount): TrophyCount {
   return {

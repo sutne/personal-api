@@ -1,8 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-
-import * as spotify from '../../src/spotify/middleware';
 import { CONFIG } from '../../src/spotify/config';
-import { ArtistType } from '../../src/spotify/types';
+import * as spotify from '../../src/spotify/middleware';
+import type { ArtistType } from '../../src/spotify/types';
 import { cacheControl, formatURL } from '../../src/util';
 
 const REQUEST_URL = formatURL('https://api.spotify.com/v1/me/top/artists', {

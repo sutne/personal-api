@@ -1,7 +1,6 @@
-import { VercelRequest, VercelResponse } from '@vercel/node';
-
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 import * as github from '../../src/github/middleware';
-import { RepoType } from '../../src/github/types';
+import type { RepoType } from '../../src/github/types';
 import { cacheControl } from '../../src/util';
 
 const USERNAME = process.env.GITHUB_USERNAME?.trim() ?? '';
@@ -27,7 +26,7 @@ export default async function (req: VercelRequest, res: VercelResponse) {
     .send(repos);
 }
 
-export async function getOrganizations(): Promise<String[] | undefined> {
+export async function getOrganizations(): Promise<string[] | undefined> {
   const orgs = await github.fetch(`/users/${USERNAME}/orgs`);
   if (orgs.error) return;
   return orgs.map((org: any) => org.login);

@@ -1,5 +1,5 @@
 import * as psn from 'psn-api';
-import { Platform } from './types';
+import type { Platform } from './types';
 import { getNpServiceName } from './util/platforms';
 
 const REFRESH_TOKEN = process.env.PLAYSTATION_REFRESH_TOKEN?.trim() ?? '';

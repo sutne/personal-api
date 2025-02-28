@@ -4,6 +4,7 @@
     "deploy": "vercel deploy --prod"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "@types/node": "^22.13.5",
     "@vercel/node": "^5.1.10",
     "psn-api": "^2.11.0",

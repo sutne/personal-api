@@ -1,11 +1,10 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-
 import { getProfile } from '../../src/playstation/middleware';
+import type { TrophyCount } from '../../src/playstation/types';
 import {
-  getTrophyPoints,
   getTrophyLevel,
+  getTrophyPoints,
 } from '../../src/playstation/util/trophy-calculation';
-import { TrophyCount } from '../../src/playstation/types';
 import { cacheControl } from '../../src/util';
 
 export default async function (req: VercelRequest, res: VercelResponse) {

@@ -1,5 +1,4 @@
 {
-  // More info: https://code.visualstudio.com/docs/editor/tasks
   "version": "2.0.0",
   "tasks": [
     {
@@ -9,7 +8,7 @@
         "color": "terminal.ansiYellow"
       },
       "type": "shell",
-      "command": "rm -rf node_modules && npm install",
+      "command": "npm install"
     },
     {
       "label": "Develop",
@@ -18,7 +17,7 @@
         "color": "terminal.ansiBlue"
       },
       "type": "shell",
-      "command": "npm start",
+      "command": "npm start"
     },
     {
       "label": "Upload '.env'",
@@ -27,7 +26,7 @@
         "color": "terminal.ansiYellow"
       },
       "type": "shell",
-      "command": "python3 scripts/sync-env.py",
+      "command": "python scripts/sync-env.py"
     },
     {
       "label": "Download '.env'",
@@ -36,7 +35,7 @@
         "color": "terminal.ansiYellow"
       },
       "type": "shell",
-      "command": "npx vercel pull --environment=production",
+      "command": "npx vercel pull --environment=production"
     },
     {
       "label": "Run 'get_playtsation-refresh-token.ts'",
@@ -45,7 +44,7 @@
         "color": "terminal.ansiYellow"
       },
       "type": "shell",
-      "command": "npx ts-node scripts/get_playstation_refresh_token.ts",
+      "command": "npx ts-node scripts/get_playstation_refresh_token.ts"
     },
     {
       "label": "Upload 'PLAYSTATION_REFRESH_TOKEN'",
@@ -54,7 +53,7 @@
         "color": "terminal.ansiYellow"
       },
       "type": "shell",
-      "command": "python3 scripts/sync-env.py PLAYSTATION_REFRESH_TOKEN",
+      "command": "python scripts/sync-env.py PLAYSTATION_REFRESH_TOKEN"
     },
     {
       "label": "Deploy",
@@ -63,7 +62,16 @@
         "color": "terminal.ansiGreen"
       },
       "type": "shell",
-      "command": "npm run deploy",
+      "command": "npm run deploy"
     },
+    {
+      "label": "Clean",
+      "icon": {
+        "id": "trash",
+        "color": "terminal.ansiRed"
+      },
+      "type": "shell",
+      "command": "rm -rf node_modules .vercel"
+    }
   ]
 }

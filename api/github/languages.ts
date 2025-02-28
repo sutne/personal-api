@@ -1,9 +1,7 @@
-import { VercelRequest, VercelResponse } from '@vercel/node';
-
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 import * as github from '../../src/github/middleware';
-
-import { getOrganizations } from './repos';
 import { cacheControl } from '../../src/util';
+import { getOrganizations } from './repos';
 
 const USERNAME = process.env.GITHUB_USERNAME?.trim() ?? '';
 
@@ -26,7 +24,7 @@ export default async function (req: VercelRequest, res: VercelResponse) {
   }
 
   // get language stats for each repo
-  let languages: Map<string, number> = new Map();
+  const languages: Map<string, number> = new Map();
   const langs = await Promise.all(
     repos.map((repo) => github.fetch(repo.languages_url)),
   );
@@ -34,14 +32,12 @@ export default async function (req: VercelRequest, res: VercelResponse) {
     const size = Object.keys(lang).reduce((sum, key) => sum + lang[key], 0);
     totalSize += size;
     for (const key in lang) {
-      if (languages.has(key)) {
-        languages.set(key, languages.get(key)! + lang[key]);
-      } else {
-        languages.set(key, lang[key]);
-      }
+      languages.set(key, (languages.get(key) ?? 0) + lang[key]);
     }
   }
-  const sorted = new Map([...languages.entries()].sort((a, b) => b[1] - a[1]));
+
+  const sortedList = Array.from(languages.entries()).sort((a, b) => b[1] - a[1]);
+  const sorted = new Map(sortedList);
 
   return res
     .status(200)

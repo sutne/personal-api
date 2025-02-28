@@ -1,7 +1,7 @@
+import type { PlatformInfo, Trophy, TrophyGroup } from '../../src/playstation/types';
 import { getTrophyGroups } from '../../src/playstation/util/api/trophy-list';
-import { PlatformInfo, Trophy, TrophyGroup } from '../../src/playstation/types';
-import { compareDate, latestDate } from '../../src/util';
 import { getTrophyCountProgress } from '../../src/playstation/util/trophy-calculation';
+import { compareDate, latestDate } from '../../src/util';
 
 /** returns all trophies (in TrophyGroup[]) for a single game */
 export async function getTrophiesForSingleTitle(
@@ -19,15 +19,10 @@ export async function getTrophiesForSingleTitle(
   return combinedGroups;
 }
 
-export function combineGroups(
-  a: TrophyGroup[],
-  b: TrophyGroup[],
-): TrophyGroup[] {
+export function combineGroups(a: TrophyGroup[], b: TrophyGroup[]): TrophyGroup[] {
   const combined: TrophyGroup[] = JSON.parse(JSON.stringify(a));
   for (const group of b) {
-    const existingGroup = combined.find(
-      (g) => g.name.trim() === group.name.trim(),
-    );
+    const existingGroup = combined.find((g) => g.name.trim() === group.name.trim());
     if (!existingGroup) {
       combined.push(group);
     } else {
@@ -68,22 +63,17 @@ function mergeGroups(a: TrophyGroup, b: TrophyGroup): TrophyGroup {
 
   // if all other trophies are earned, mark platinum as earned
   if (merged.trophyCount.platinum && !merged.earnedCount.platinum) {
-    const hasAllBronze = merged.earnedCount.bronze == merged.trophyCount.bronze;
-    const hasAllSilver = merged.earnedCount.silver == merged.trophyCount.silver;
-    const hasAllGold = merged.earnedCount.gold == merged.trophyCount.gold;
+    const hasAllBronze = merged.earnedCount.bronze === merged.trophyCount.bronze;
+    const hasAllSilver = merged.earnedCount.silver === merged.trophyCount.silver;
+    const hasAllGold = merged.earnedCount.gold === merged.trophyCount.gold;
     if (hasAllBronze && hasAllSilver && hasAllGold) {
       merged.earnedCount.platinum = 1;
       const platinum = merged.trophies.find((t) => t.type === 'platinum');
-      platinum!.isEarned = true;
-      platinum!.earnedAt = merged.trophies
-        .map((t) => t.earnedAt)
-        .reduce(latestDate);
+      platinum.isEarned = true;
+      platinum.earnedAt = merged.trophies.map((t) => t.earnedAt).reduce(latestDate);
     }
   }
-  merged.progress = getTrophyCountProgress(
-    merged.earnedCount,
-    merged.trophyCount,
-  );
+  merged.progress = getTrophyCountProgress(merged.earnedCount, merged.trophyCount);
   return merged;
 }
 

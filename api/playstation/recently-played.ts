@@ -1,9 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-
 import { getRecentlyPlayedGames } from '../../src/playstation/middleware';
-import { RecentGame } from '../../src/playstation/types';
-import { cacheControl } from '../../src/util';
+import type { RecentGame } from '../../src/playstation/types';
 import { platform } from '../../src/playstation/util/platforms';
+import { cacheControl } from '../../src/util';
 
 export default async function (req: VercelRequest, res: VercelResponse) {
   const games = await getRecentlyPlayedGames();

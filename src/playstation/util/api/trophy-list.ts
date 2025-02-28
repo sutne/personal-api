@@ -1,12 +1,12 @@
+import { earliestDate, json } from '../../../util';
+import { ACCOUNTS } from '../../config';
 import {
   getEarnedTrophies,
   getGameTrophies,
   getTrophyGroupInfo,
 } from '../../middleware';
-import { Platform, Trophy, TrophyGroup } from '../../types';
-import { earliestDate, json } from '../../../util';
+import type { Platform, Trophy, TrophyGroup } from '../../types';
 import { getTrophyCountProgress } from '../trophy-calculation';
-import { ACCOUNTS } from '../../config';
 
 export async function getTrophyGroups(id: string, platform: Platform) {
   const [trophiesInfo, groupInfo] = await Promise.all([
@@ -59,9 +59,7 @@ export async function getTrophyGroups(id: string, platform: Platform) {
       const earnedTrophy = earnedTophies[i];
       if (earnedTrophy.trophyId !== trophyInfo.trophyId) {
         throw new Error(
-          `Trophy id mismatch: "${json(earnedTrophy)}" vs "${json(
-            trophyInfo,
-          )}"`,
+          `Trophy id mismatch: "${json(earnedTrophy)}" vs "${json(trophyInfo)}"`,
         );
       }
       trophy.rarity = earnedTrophy.trophyEarnedRate;
@@ -69,17 +67,12 @@ export async function getTrophyGroups(id: string, platform: Platform) {
       if (earnedTrophy.earned) {
         trophy.isEarned = true;
         if (trophy.earnedAt) {
-          trophy.earnedAt = earliestDate(
-            trophy.earnedAt,
-            earnedTrophy.earnedDateTime,
-          );
+          trophy.earnedAt = earliestDate(trophy.earnedAt, earnedTrophy.earnedDateTime);
         } else {
           trophy.earnedAt = earnedTrophy.earnedDateTime;
         }
       } else {
-        const progressTarget = Number(
-          trophyInfo.trophyProgressTargetValue ?? 0,
-        );
+        const progressTarget = Number(trophyInfo.trophyProgressTargetValue ?? 0);
         if (progressTarget > 1) {
           trophy.progress = {
             achieved: Number(earnedTrophy.progress ?? 0),
@@ -96,16 +89,13 @@ export async function getTrophyGroups(id: string, platform: Platform) {
 
   // Update progress and trophies for group
   for (const group of groups) {
-    group.progress = getTrophyCountProgress(
-      group.earnedCount,
-      group.trophyCount,
-    );
+    group.progress = getTrophyCountProgress(group.earnedCount, group.trophyCount);
   }
 
   return groups;
 }
 
 function getGroupIndex(groupId: string | undefined) {
-  if (!groupId || groupId == 'default') return 0;
-  return parseInt(groupId); // Group ids: "001", "002", ...
+  if (!groupId || groupId === 'default') return 0;
+  return Number.parseInt(groupId); // Group ids: "001", "002", ...
 }

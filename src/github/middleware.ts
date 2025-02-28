@@ -1,4 +1,4 @@
-import { GET, POST } from '../fetch';
+import { GET } from '../fetch';
 
 const GITHUB_ACCESS_TOKEN = process.env.GITHUB_ACCESS_TOKEN?.trim() ?? '';
 const BASE_URL = 'https://api.github.com';

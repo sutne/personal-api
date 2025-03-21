@@ -58,7 +58,7 @@ export type Trophy = {
   icon: string;
   type: TrophyType;
   isHidden: boolean;
-  rarity?: string;
+  rarity: string;
   isEarned: boolean;
   earnedAt?: string;
   progress?: {

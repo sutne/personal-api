@@ -44,7 +44,7 @@ export async function getTrophyGroups(id: string, platform: Platform) {
     const trophyInfo = trophiesInfo[i];
     const groupIndex = getGroupIndex(trophyInfo.trophyGroupId);
 
-    const trophy: Trophy = {
+    const trophy: Partial<Trophy> = {
       id: trophyInfo.trophyId,
       title: trophyInfo.trophyName ?? '',
       description: trophyInfo.trophyDetail ?? '',
@@ -84,7 +84,7 @@ export async function getTrophyGroups(id: string, platform: Platform) {
 
     if (trophy.isEarned) groups[groupIndex].earnedCount[trophy.type] += 1;
     // Add trophy and its info to list
-    groups[groupIndex].trophies.push(trophy);
+    groups[groupIndex].trophies.push(trophy as Trophy);
   }
 
   // Update progress and trophies for group

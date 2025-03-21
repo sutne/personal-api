@@ -19,20 +19,20 @@ export default async function (req: VercelRequest, res: VercelResponse) {
   if (!ids && !platforms) {
     return res
       .status(200)
-      .setHeader('Cache-Control', cacheControl({ hours: 12 }))
+      .setHeader('Cache-Control', cacheControl({ minutes: 30 }))
       .send(await getOverviewForAllGames());
   }
 
   if (ids.length !== platforms.length) {
     throw new Error(`ids: ${ids}  must match platforms: ${platforms}`);
   }
-
   const platformInfoArr: PlatformInfo[] = ids.map((id, i) => ({
     id,
     platform: platforms[i],
   }));
+
   return res
     .status(200)
-    .setHeader('Cache-Control', cacheControl({ minutes: 5 }))
+    .setHeader('Cache-Control', cacheControl({ minutes: 30 }))
     .send(await getTrophiesForSingleTitle(platformInfoArr));
 }

@@ -66,3 +66,17 @@ export type Trophy = {
     target: number;
   };
 };
+
+export type CompleteTrophy = Trophy & {
+  game: {
+    id: string;
+    name: string;
+    icon: string;
+    platform: Platform;
+  };
+  group: {
+    id: number;
+    name: string;
+    icon: string;
+  };
+};

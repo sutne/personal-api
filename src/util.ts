@@ -33,14 +33,11 @@ export function convert(data: any, contentType?: string) {
 }
 
 /**
- * @returns positive if a is a before b, negative if b is before a.
+ * @returns difference in ms between the two dates. Sorting will give latest time first.
  */
 export function compareDate(a: string | undefined, b: string | undefined): number {
-  if (!a && !b) return 0;
-  if (!a) return 1;
-  if (!b) return -1;
-  const aTime = new Date(a).getTime();
-  const bTime = new Date(b).getTime();
+  const aTime = !a ? 0 : new Date(a).getTime();
+  const bTime = !b ? 0 : new Date(b).getTime();
   return bTime - aTime;
 }
 

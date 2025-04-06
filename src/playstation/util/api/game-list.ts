@@ -3,6 +3,10 @@ import { ACCOUNTS } from '../../config';
 import { getGameList } from '../../middleware';
 import { getTrophyPoints } from '../trophy-calculation';
 
+const IGNORED_GAMES = [
+  'Fortnite', // got a few trophies by "accident" when i didn't realize it was a 1000 hour+ grind, hiddenFlag doesn't seem to work
+];
+
 export async function getGames() {
   const games: TrophyTitle[] = [];
 
@@ -28,5 +32,5 @@ export async function getGames() {
       }
     }
   }
-  return games;
+  return games.filter((game) => !IGNORED_GAMES.includes(game.trophyTitleName));
 }

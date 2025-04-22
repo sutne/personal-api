@@ -14,8 +14,8 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Biome Check
-        run: npx biome check
+      - name: Linting and Formatting
+        run: npm run check
 
-      - name: Typescript Compile
-        run: npx tsc --noEmit
+      - name: Compile
+        run: npm run compile

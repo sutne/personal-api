@@ -107,7 +107,7 @@ function compareEarnedTrophies(a: CompleteTrophy, b: CompleteTrophy) {
 
 function compareUnearnedTrophies(a: CompleteTrophy, b: CompleteTrophy) {
   return compareTrophies(a, b, [
-    { func: compareTrophyProgress },
+    { func: compareTrophyProgress, reverse: true },
     { func: compareTrophyRarity },
     { func: compareTrophyGame },
     { func: compareTrophyGroup },

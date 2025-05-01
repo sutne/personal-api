@@ -7,10 +7,10 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
-    "@types/node": "^22.14.1",
-    "@vercel/node": "^5.1.14",
+    "@types/node": "^22.15.3",
+    "@vercel/node": "^5.1.15",
     "psn-api": "^2.11.2",
     "typescript": "^5.8.3",
-    "vercel": "^41.6.2"
+    "vercel": "^41.7.0"
   }
 }

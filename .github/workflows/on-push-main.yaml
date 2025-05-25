@@ -1,9 +1,10 @@
 name: on-push-main
+
 on:
   push:
     branches:
-      - "main"
+      - main
 
 jobs:
-  linting-and-formatting:
-    uses: ./.github/workflows/linting-and-formatting.yaml
+  lint-and-format:
+    uses: ./.github/workflows/lint-and-format.yaml

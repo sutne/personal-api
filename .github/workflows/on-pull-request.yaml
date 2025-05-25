@@ -1,7 +1,8 @@
 name: on-pull-request
+
 on:
   pull_request:
 
 jobs:
-  linting-and-formatting:
-    uses: ./.github/workflows/linting-and-formatting.yaml
+  lint-and-format:
+    uses: ./.github/workflows/lint-and-format.yaml

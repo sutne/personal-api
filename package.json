@@ -6,11 +6,11 @@
     "compile": "tsc --noEmit"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
-    "@types/node": "^22.15.29",
-    "@vercel/node": "^5.2.1",
-    "psn-api": "^2.12.0",
+    "@biomejs/biome": "2.0.6",
+    "@types/node": "^24.0.8",
+    "@vercel/node": "^5.3.0",
+    "psn-api": "^2.14.0",
     "typescript": "^5.8.3",
-    "vercel": "^42.3.0"
+    "vercel": "^44.2.7"
   }
 }

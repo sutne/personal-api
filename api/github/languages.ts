@@ -5,7 +5,7 @@ import { getOrganizations } from './repos';
 
 const USERNAME = process.env.GITHUB_USERNAME?.trim() ?? '';
 
-export default async function (req: VercelRequest, res: VercelResponse) {
+export default async function (_req: VercelRequest, res: VercelResponse) {
   let totalSize = 0;
   let repos: any[] = [];
 

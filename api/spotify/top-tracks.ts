@@ -10,7 +10,7 @@ const REQUEST_URL = formatURL('https://api.spotify.com/v1/me/top/tracks', {
   time_range: CONFIG.TIME_RANGE,
 });
 
-export default async function (req: VercelRequest, res: VercelResponse) {
+export default async function (_req: VercelRequest, res: VercelResponse) {
   const response = await spotify.fetch(REQUEST_URL);
   const items = response?.items;
   if (!items) {

@@ -5,7 +5,7 @@ import { cacheControl } from '../../src/util';
 
 const USERNAME = process.env.GITHUB_USERNAME?.trim() ?? '';
 
-export default async function (req: VercelRequest, res: VercelResponse) {
+export default async function (_req: VercelRequest, res: VercelResponse) {
   let repos = await github.fetch(`/users/${USERNAME}/repos`);
   if (!repos) return res.status(500).send('Failed to load GitHub data');
   repos = await filterRepos(repos);

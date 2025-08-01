@@ -7,7 +7,7 @@ import {
 } from '../../src/playstation/util/trophy-calculation';
 import { cacheControl } from '../../src/util';
 
-export default async function (req: VercelRequest, res: VercelResponse) {
+export default async function (_req: VercelRequest, res: VercelResponse) {
   const [primary, secondary] = await Promise.all([
     getProfile('Sutne_'),
     getProfile('Sivvi__'),

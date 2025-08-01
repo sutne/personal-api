@@ -5,7 +5,7 @@ import { cacheControl } from '../../src/util';
 /**
  * @returns all trophies as a Trophy[] across all games, earned or not.
  */
-export default async function (req: VercelRequest, res: VercelResponse) {
+export default async function (_req: VercelRequest, res: VercelResponse) {
   const allTrophies = await getAllTrophies();
   return res
     .status(200)

@@ -4,7 +4,7 @@ import type { RecentGame } from '../../src/playstation/types';
 import { platform } from '../../src/playstation/util/platforms';
 import { cacheControl } from '../../src/util';
 
-export default async function (req: VercelRequest, res: VercelResponse) {
+export default async function (_req: VercelRequest, res: VercelResponse) {
   const games = await getRecentlyPlayedGames();
 
   const filtered: RecentGame[] = games.map((game) => {

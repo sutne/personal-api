@@ -5,7 +5,7 @@ import { cacheControl, formatURL } from '../../src/util';
 
 const REQUEST_URL = formatURL('https://api.spotify.com/v1/me/player/currently-playing');
 
-export default async function (req: VercelRequest, res: VercelResponse) {
+export default async function (_req: VercelRequest, res: VercelResponse) {
   const response = await spotify.fetch(REQUEST_URL);
   const nowPlaying = filterNowPlaying(response);
   res

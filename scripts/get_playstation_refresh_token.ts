@@ -1,4 +1,4 @@
-import { exchangeCodeForAccessToken, exchangeNpssoForCode } from 'psn-api';
+import { exchangeAccessCodeForAuthTokens, exchangeNpssoForAccessCode } from 'psn-api';
 
 // run with:
 // npx ts-node scripts/get_playstation_refresh_token.ts
@@ -8,9 +8,9 @@ import { exchangeCodeForAccessToken, exchangeNpssoForCode } from 'psn-api';
 const token = { npsso: '<64-char-token>' };
 
 async function getTokens() {
-  const accessCode = await exchangeNpssoForCode(token.npsso);
+  const accessCode = await exchangeNpssoForAccessCode(token.npsso);
   console.log({ accessCode });
-  const authorization = await exchangeCodeForAccessToken(accessCode);
+  const authorization = await exchangeAccessCodeForAuthTokens(accessCode);
   console.log({ authorization });
 }
 getTokens();

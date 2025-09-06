@@ -97,5 +97,5 @@ export async function getTrophyGroups(id: string, platform: Platform) {
 
 function getGroupIndex(groupId: string | undefined) {
   if (!groupId || groupId === 'default') return 0;
-  return Number.parseInt(groupId); // Group ids: "001", "002", ...
+  return Number.parseInt(groupId, 10); // Group ids: "001", "002", ...
 }

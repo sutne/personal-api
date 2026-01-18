@@ -1,0 +1,19 @@
+[tools]
+node = "24"
+python = "3.13"
+
+[env]
+_.file = ".env"
+
+[task_config]
+includes = [
+  ".mise/tasks/general.toml",
+  ".mise/tasks/scripts.toml",
+  ".mise/tasks/vercel.toml",
+]
+
+[settings]
+experimental = true
+
+[hooks]
+postinstall = ["mise run install-dependencies"]

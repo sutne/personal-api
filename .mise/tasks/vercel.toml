@@ -1,0 +1,15 @@
+[env-upload]
+description = "Upload all local .env variables to Vercel"
+run         = "python scripts/sync-env.py"
+
+[env-upload-psn]
+description = "Upload local PLAYSTATION_REFRESH_TOKEN from .env to Vercel"
+run         = "python scripts/sync-env.py PLAYSTATION_REFRESH_TOKEN"
+
+[env-download]
+description = "Download current .env production variables from Vercel"
+run         = "npx vercel pull --environment=production"
+
+[deploy]
+description = "Deploy current local api to Vercel (also done in ci on push to main)"
+run         = "npx vercel deploy --prod"

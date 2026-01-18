@@ -1,7 +1,5 @@
 {
   "scripts": {
-    "start": "vercel dev",
-    "deploy": "vercel deploy --prod",
     "check": "biome check --write --unsafe --diagnostic-level=error",
     "compile": "tsc --noEmit"
   },

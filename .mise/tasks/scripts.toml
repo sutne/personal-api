@@ -1,0 +1,3 @@
+[get-playstation-refresh-token]
+description = "Run .ts script to retreive PSN refresh token."
+run         = "npx ts-node scripts/get_playstation_refresh_token.ts"

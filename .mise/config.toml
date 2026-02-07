@@ -6,11 +6,7 @@ python = "3.13"
 _.file = ".env"
 
 [task_config]
-includes = [
-  ".mise/tasks/general.toml",
-  ".mise/tasks/scripts.toml",
-  ".mise/tasks/vercel.toml",
-]
+includes = ["tasks/*.toml"]
 
 [settings]
 experimental = true

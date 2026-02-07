@@ -1,6 +1,6 @@
 [install-dependencies]
 description = "Install dependencies"
-run         = ["npm install"]
+run         = ["npm ci"]
 
 [serve]
 description = "Serve api with hot reloading on changes"

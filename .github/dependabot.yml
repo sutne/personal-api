@@ -1,17 +1,26 @@
 version: 2
+
 updates:
   - package-ecosystem: "github-actions"
-    directory: "/"
+    directories:
+      - "/.github/workflows"
+      - "/.github/actions/*"
+    groups:
+      ci:
+        patterns:
+          - "*"
     schedule:
       interval: "monthly"
+    cooldown:
+      default-days: 7
 
   - package-ecosystem: "npm"
     directory: "/"
-    schedule:
-      interval: "monthly"
     groups:
       dependencies:
         patterns:
           - "*"
-    commit-message:
-      prefix: "build"
+    schedule:
+      interval: "monthly"
+    cooldown:
+      default-days: 7

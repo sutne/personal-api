@@ -6,10 +6,10 @@ python = "3.13"
 _.file = ".env"
 
 [task_config]
-includes = ["tasks/*.toml"]
+includes = [".mise/tasks/*.toml"]
 
 [settings]
 experimental = true
 
 [hooks]
-postinstall = ["mise run install-dependencies"]
+postinstall = ["npm ci"]

@@ -1,16 +1,7 @@
-[install-dependencies]
-description = "Install dependencies"
-run         = ["npm ci"]
+[clean]
+description = "Remove all untracked or safe to remove files"
+run = "git clean -fdx -e .env -e .vercel"
 
 [serve]
 description = "Serve api with hot reloading on changes"
-depends     = "install-dependencies"
-run         = "npx vercel dev"
-
-[clean]
-description = "Remove all untracked or safe to remove files"
-run         = "git clean -fdx -e .env -e .vercel"
-
-[format]
-description = "Format all files"
-run         = ["mise fmt", "npm run check"]
+run = ["npm ci", "npx vercel dev"]

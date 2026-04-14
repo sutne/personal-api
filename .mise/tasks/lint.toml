@@ -1,0 +1,19 @@
+["lint:mise"]
+description = "Format mise files"
+run = "mise fmt"
+
+["lint:biome"]
+description = "Lint and format TypeScript files"
+run = "npx biome check --write --unsafe --diagnostic-level=error"
+
+["lint:compile"]
+description = "Compile TypeScript"
+run = "npx tsc --noEmit"
+
+[lint]
+description = "Lint and format entire project"
+run = [
+    "mise run lint:mise", 
+    "mise run lint:biome", 
+    "mise run lint:compile",
+]

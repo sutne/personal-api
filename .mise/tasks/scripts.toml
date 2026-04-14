@@ -1,3 +1,11 @@
 [get-playstation-refresh-token]
 description = "Run .ts script to retreive PSN refresh token."
-run         = "npx ts-node scripts/get_playstation_refresh_token.ts"
+alias = "gprt"
+run = "npx ts-node scripts/get_playstation_refresh_token.ts"
+
+[sync-psn-and-deploy]
+description = "Deploy API with updated PLAYSTATION_REFRESH_TOKEN from local .env"
+run = [
+    "mise run env-upload-psn", 
+    "mise run deploy"
+]

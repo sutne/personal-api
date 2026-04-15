@@ -22,7 +22,7 @@ function pointsToNextLevel(currentLevel: number): number {
 
 export function getTrophyPoints(counts: TrophyCount): number {
   return Object.entries(counts).reduce((sum, trophy) => {
-    const [type, count] = trophy;
+    const [type, count] = trophy as [keyof typeof TrophyPoints, number];
     return sum + TrophyPoints[type] * count;
   }, 0);
 }

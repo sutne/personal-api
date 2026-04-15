@@ -53,12 +53,15 @@ export function compareTrophyProgress(a: Trophy, b: Trophy): number {
   return progressDiff;
 }
 
-type TrophyComparator = { func: (a: Trophy, b: Trophy) => number; reverse?: boolean };
+type TrophyComparator<T extends Trophy> = {
+  func: (a: T, b: T) => number;
+  reverse?: boolean;
+};
 /** sort trophies based on custom set of comparators performed in order. */
-export function compareTrophies(
-  a: Trophy,
-  b: Trophy,
-  comparators: TrophyComparator[],
+export function compareTrophies<T extends Trophy>(
+  a: T,
+  b: T,
+  comparators: TrophyComparator<T>[],
 ): number {
   for (const { func, reverse } of comparators) {
     const diff = func(a, b);

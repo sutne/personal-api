@@ -82,7 +82,9 @@ export async function getTrophyGroups(id: string, platform: Platform) {
       }
     }
 
-    if (trophy.isEarned) groups[groupIndex].earnedCount[trophy.type] += 1;
+    if (trophy.isEarned && trophy.type) {
+      groups[groupIndex].earnedCount[trophy.type] += 1;
+    }
     // Add trophy and its info to list
     groups[groupIndex].trophies.push(trophy as Trophy);
   }

@@ -40,7 +40,7 @@ export async function getAllTrophies(): Promise<CompleteTrophy[]> {
         trophyTitle.npCommunicationId,
         platform(trophyTitle.trophyTitlePlatform),
       );
-      const trophies: CompleteTrophy[] = groups.reduce(
+      const trophies: CompleteTrophy[] = groups.reduce<CompleteTrophy[]>(
         (trophies, group) =>
           trophies.concat(
             group.trophies.map((trophy) => {

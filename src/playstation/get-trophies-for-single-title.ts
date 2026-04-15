@@ -69,8 +69,10 @@ function mergeGroups(a: TrophyGroup, b: TrophyGroup): TrophyGroup {
     if (hasAllBronze && hasAllSilver && hasAllGold) {
       merged.earnedCount.platinum = 1;
       const platinum = merged.trophies.find((t) => t.type === 'platinum');
-      platinum.isEarned = true;
-      platinum.earnedAt = merged.trophies.map((t) => t.earnedAt).reduce(latestDate);
+      if (platinum) {
+        platinum.isEarned = true;
+        platinum.earnedAt = merged.trophies.map((t) => t.earnedAt).reduce(latestDate);
+      }
     }
   }
   merged.progress = getTrophyCountProgress(merged.earnedCount, merged.trophyCount);

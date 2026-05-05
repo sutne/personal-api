@@ -4,10 +4,20 @@ import { getNpServiceName } from './util/platforms';
 
 const REFRESH_TOKEN = process.env.PLAYSTATION_REFRESH_TOKEN?.trim() ?? '';
 
-async function getAuth(): Promise<any> {
+let authPromise: Promise<psn.AuthTokensResponse> | null = null;
+
+async function getAuth(): Promise<psn.AuthTokensResponse> {
   if (!REFRESH_TOKEN) throw new Error('No refresh token provided.');
-  const auth = await psn.exchangeRefreshTokenForAuthTokens(REFRESH_TOKEN);
-  return auth;
+  if (!authPromise) {
+    authPromise = (async () => {
+      const authorization = await psn.exchangeRefreshTokenForAuthTokens(REFRESH_TOKEN);
+      return authorization;
+    })().catch((err) => {
+      authPromise = null;
+      throw err;
+    });
+  }
+  return authPromise;
 }
 
 export async function getProfile(

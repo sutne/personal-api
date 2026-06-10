@@ -33,6 +33,6 @@ export default async function (req: VercelRequest, res: VercelResponse) {
 
   return res
     .status(200)
-    .setHeader('Cache-Control', cacheControl({ minutes: 30 }))
+    .setHeader('Cache-Control', cacheControl({ hours: 1 }))
     .send(await getTrophiesForSingleTitle(platformInfoArr));
 }

@@ -1,16 +1,18 @@
 import * as psn from 'psn-api';
+import { exchangeAccessCodeForAuthTokens, exchangeNpssoForAccessCode } from 'psn-api';
 import type { Platform } from './types';
 import { getNpServiceName } from './util/platforms';
 
-const REFRESH_TOKEN = process.env.PLAYSTATION_REFRESH_TOKEN?.trim() ?? '';
+const NPSSO = process.env.PLAYSTATION_NPSSO?.trim() ?? '';
 
 let authPromise: Promise<psn.AuthTokensResponse> | null = null;
 
 async function getAuth(): Promise<psn.AuthTokensResponse> {
-  if (!REFRESH_TOKEN) throw new Error('No refresh token provided.');
+  if (!NPSSO) throw new Error('No NPSSO token provided.');
   if (!authPromise) {
     authPromise = (async () => {
-      const authorization = await psn.exchangeRefreshTokenForAuthTokens(REFRESH_TOKEN);
+      const accessCode = await exchangeNpssoForAccessCode(NPSSO);
+      const authorization = await exchangeAccessCodeForAuthTokens(accessCode);
       return authorization;
     })().catch((err) => {
       authPromise = null;

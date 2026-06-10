@@ -9,6 +9,6 @@ export default async function (_req: VercelRequest, res: VercelResponse) {
   const allTrophies = await getAllTrophies();
   return res
     .status(200)
-    .setHeader('Cache-Control', cacheControl({ minutes: 30 }))
+    .setHeader('Cache-Control', cacheControl({ hours: 1 }))
     .send(allTrophies);
 }

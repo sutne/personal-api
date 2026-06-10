@@ -1,11 +1,18 @@
-[get-playstation-refresh-token]
-description = "Run .ts script to retreive PSN refresh token."
-alias = "gprt"
-run = "npx ts-node scripts/get_playstation_refresh_token.ts"
+["psn:auth"]
+description = "Open Safari to manually authenticate with PSN"
+run = "open -a Safari https://psn-api.achievements.app/authentication/authenticating-manually"
 
-[sync-psn-and-deploy]
-description = "Deploy API with updated PLAYSTATION_REFRESH_TOKEN from local .env"
+["psn:sync-auth-and-deploy"]
+description = "Deploy API with updated playstation auth from local .env"
 run = [
-    "mise run env-upload-psn", 
+    "mise run env-upload:psn", 
     "mise run deploy"
 ]
+
+["env-upload"]
+description = "Upload all local .env variables to Vercel"
+run = "python scripts/sync-env.py"
+
+["env-upload:psn"]
+description = "Upload local playstation auth from .env to Vercel"
+run = "python scripts/sync-env.py PLAYSTATION_NPSSO"

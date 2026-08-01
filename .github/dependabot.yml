@@ -7,10 +7,10 @@ updates:
       - "/.github/actions/*"
     groups:
       ci:
-        patterns:
-          - "*"
+        patterns: ["*"]
     schedule:
-      interval: "monthly"
+      interval: "cron"
+      cronjob: "0 0 1 2,4,6,8,12 *"
     cooldown:
       default-days: 7
 
@@ -18,9 +18,9 @@ updates:
     directory: "/"
     groups:
       dependencies:
-        patterns:
-          - "*"
+        patterns: ["*"]
     schedule:
-      interval: "monthly"
+      interval: "cron"
+      cronjob: "0 0 1 2,4,6,8,12 *"
     cooldown:
       default-days: 7

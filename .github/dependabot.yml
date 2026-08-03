@@ -10,17 +10,20 @@ updates:
         patterns: ["*"]
     schedule:
       interval: "cron"
-      cronjob: "0 0 1 2,4,6,8,12 *"
+      cronjob: "0 0 1 2,4,6,8,10,12 *"
     cooldown:
       default-days: 7
 
   - package-ecosystem: "npm"
     directory: "/"
     groups:
-      dependencies:
+      npm:
+        patterns: ["*"]
+      security:
+        applies-to: "security-updates"
         patterns: ["*"]
     schedule:
       interval: "cron"
-      cronjob: "0 0 1 2,4,6,8,12 *"
+      cronjob: "0 0 1 2,4,6,8,10,12 *"
     cooldown:
       default-days: 7

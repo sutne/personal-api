@@ -4,4 +4,4 @@ run = "git clean -fdx -e .env -e .vercel"
 
 [serve]
 description = "Serve api with hot reloading on changes"
-run = ["npm ci", "npx vercel dev"]
+run = "npx vercel dev"

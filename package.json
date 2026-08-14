@@ -1,8 +1,8 @@
 {
   "devDependencies": {
     "@biomejs/biome": "2.5.8",
-    "@types/node": "26.1.1",
-    "@vercel/node": "5.8.27",
+    "@types/node": "26.1.2",
+    "@vercel/node": "5.9.5",
     "psn-api": "2.18.0",
     "typescript": "6.0.3",
     "vercel": "59.0.0"

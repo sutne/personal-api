@@ -5,6 +5,6 @@
     "@vercel/node": "14.0.0",
     "psn-api": "2.18.1",
     "typescript": "6.0.3",
-    "vercel": "59.26.0"
+    "vercel": "67.0.0"
   }
 }

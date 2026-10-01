@@ -1,10 +1,10 @@
 {
   "devDependencies": {
-    "@biomejs/biome": "2.5.8",
-    "@types/node": "26.1.2",
-    "@vercel/node": "5.9.5",
-    "psn-api": "2.18.0",
+    "@biomejs/biome": "2.5.14",
+    "@types/node": "26.6.2",
+    "@vercel/node": "14.0.0",
+    "psn-api": "2.18.1",
     "typescript": "6.0.3",
-    "vercel": "59.15.1"
+    "vercel": "59.26.0"
   }
 }
